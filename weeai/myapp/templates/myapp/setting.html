@@ -1,0 +1,38 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setting Page</title>
+    {% tailwind_css %}
+</head>
+<body>
+    <div class="container mx-auto bg-red-200">
+        <div class="flex flex-col items-center justify-center h-screen">
+            <h1 class="text-4xl font-bold text-center text-gray-700">Setting Page</h1>
+            <p class="text-xl text-center text-gray-700">This is my first tailwind django project</p>
+            <ul>
+                <li><a href="/">Index</a></li>
+                <li><a href="/dashboard/">Dashboard</a></li>
+                <li><a href="/docs/">Docs</a></li>
+                <li><a href="/blog/">Blog</a></li>
+                <li><a href="/setting/">Setting</a></li>
+                <li><a href="/help/">Help</a></li>
+                <li><a href="/about/">About</a></li>
+                <li><a href="/signin/">Sign In</a></li>
+                <li><a href="/signup/">Sign Up</a></li>
+                <li><a href="/signout">Sign Out</a></li>
+                <li><a href="/account/">Account</a></li>
+                <li><a href="/import/">Import</a></li>
+                <li><a href="/files/">Files</a></li>
+                <li><a href="/report/">Report</a></li>
+                <li><a href="/export/image/">Export Image</a></li>
+                <li><a href="/export/image/">Export Report</a></li>
+                <li><a href="/manage/user/">Manage User</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

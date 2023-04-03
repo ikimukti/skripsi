@@ -1,0 +1,34 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    {% tailwind_css %}
+</head>
+<body>
+    <!-- Index For My Skripsi -->
+    <div class="container mx-auto bg-red-200">
+        <div class="flex flex-col items-center justify-center h-screen">
+            <h1 class="text-4xl font-bold text-center text-gray-700">{{ title }}</h1>
+            <p class="text-xl text-center text-gray-700">{{ content }}</p>
+            <!-- ul list menu with context menu -->
+            <ul>
+                {% for menu in menus %}
+                    <li><a href="{{ menu.url }}">{{ menu.name }}</a></li>
+                    <!-- submenus -->
+                    {% if menu.submenus %}
+                        <ul>
+                            {% for submenu in menu.submenus %}
+                                <li><a href="{{ submenu.url }}">1{{ submenu.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
