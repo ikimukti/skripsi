@@ -1,0 +1,11 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block container %}
+{% for image in images %}
+    <div>
+        <h1>{{ image.title }}</h1>
+        <p>{{ image.pathImage }} - Uploaded by {{ image.uploader }}</p>
+    </div>
+{% endfor %}
+{% endblock container %}
