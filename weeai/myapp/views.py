@@ -30,6 +30,7 @@ menus = [
     ]},
 ]
 
+
 # Create your views here.
 def index(request):
     context = {
@@ -105,7 +106,6 @@ def help(request):
 
 def image(request):
     images = XImage.objects.all()
-
     context = {
         'title': 'WeeAI - Image',
         'content': 'Welcome to WeeAI!',
@@ -117,3 +117,51 @@ def image(request):
         'images': images,	
     }
     return render(request, "myapp/image.html", context)
+
+def about(request):
+    context = {
+        'title': 'WeeAI - About',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'image': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/about.html", context)
+
+def signin(request):
+    context = {
+        'title': 'WeeAI - Sign In',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'image': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/signin.html", context)
+
+def signup(request):
+    context = {
+        'title': 'WeeAI - Sign Up',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'image': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/signup.html", context)
+
+def profile(request):
+    context = {
+        'title': 'WeeAI - Profile',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'image': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/profile.html", context)

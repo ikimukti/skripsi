@@ -33,3 +33,4 @@ skripsi is a simple project for my thesis in the university of PGRI Kediri.
     Superuser created successfully.
 22. open the browser and go to "http://127.0.0.1:8000/admin"
 23. login with superuser "admin" and password "*********"
+

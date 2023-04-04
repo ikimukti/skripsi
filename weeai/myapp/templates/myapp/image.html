@@ -4,7 +4,7 @@
 {% block container %}
 {% for image in images %}
     <div>
-        <h1>{{ image.title }}</h1>
+        <h1>{{ image.title }} - date {{ image.date }}</h1>
         <p>{{ image.pathImage }} - Uploaded by {{ image.uploader }}</p>
     </div>
 {% endfor %}
