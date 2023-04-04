@@ -737,36 +737,20 @@ select {
   height: 100vh;
 }
 
-.w-16 {
-  width: 4rem;
-}
-
-.w-1\/4 {
-  width: 25%;
-}
-
-.w-3\/4 {
-  width: 75%;
-}
-
-.w-full {
-  width: 100%;
-}
-
-.w-2\/6 {
-  width: 33.333333%;
-}
-
-.w-4\/6 {
-  width: 66.666667%;
-}
-
 .w-1\/6 {
   width: 16.666667%;
 }
 
+.w-16 {
+  width: 4rem;
+}
+
 .w-5\/6 {
   width: 83.333333%;
+}
+
+.w-full {
+  width: 100%;
 }
 
 .flex-col {
@@ -781,6 +765,11 @@ select {
   justify-content: center;
 }
 
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+
 .bg-gray-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
@@ -789,11 +778,6 @@ select {
 .bg-red-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 202 202 / var(--tw-bg-opacity));
-}
-
-.bg-gray-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 
 .bg-white {
