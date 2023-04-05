@@ -5,7 +5,7 @@
 <div>
         <h1>{{ image.title }} - date {{ image.date }}</h1>
         <p>{{ image.pathImage }} - Uploaded by <a href="{% url 'myapp:uploaderImage' image.uploader %}">{{ image.uploader }}</a></p>
-        <a href="{% url 'myapp:singleImage' image.id %}">Details</a>
+        <a href="{% url 'myapp:image' %}">Back</a>
     </div>
 
 {% endblock container %}
