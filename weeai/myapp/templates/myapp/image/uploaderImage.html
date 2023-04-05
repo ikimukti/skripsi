@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block container %}
+{% comment %} For images {% endcomment %}
 {% for image in images %}
     <div>
         <h1>{{ image.title }} - date {{ image.date }}</h1>

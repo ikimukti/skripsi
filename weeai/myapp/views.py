@@ -40,7 +40,7 @@ def index(request):
         'contributor': 'WeeAI Team',
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
-        'image': 'myapp/images/Logo.png',
+        'logo': 'myapp/images/Logo.png',
     }
     return render(request, "myapp/index.html", context)
 
@@ -52,7 +52,7 @@ def dashboard(request):
         'app_css': 'myapp/css/styles.css',
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
-        'image': 'myapp/images/Logo.png',
+        'logo': 'myapp/images/Logo.png',
     }
     return render(request, "myapp/dashboard.html", context)
 
@@ -64,7 +64,7 @@ def docs(request):
         'app_css': 'myapp/css/styles.css',
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
-        'image': 'myapp/images/Logo.png',
+        'logo': 'myapp/images/Logo.png',
     }
     return render(request, "myapp/docs.html", context)
 
@@ -76,7 +76,7 @@ def blog(request):
         'app_css': 'myapp/css/styles.css',
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
-        'image': 'myapp/images/Logo.png',
+        'logo': 'myapp/images/Logo.png',
     }
     return render(request, "myapp/blog.html", context)
 
@@ -88,7 +88,7 @@ def setting(request):
         'app_css': 'myapp/css/styles.css',
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
-        'image': 'myapp/images/Logo.png',
+        'logo': 'myapp/images/Logo.png',
     }
     return render(request, "myapp/setting.html", context)
 
@@ -100,7 +100,7 @@ def help(request):
         'app_css': 'myapp/css/styles.css',
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
-        'image': 'myapp/images/Logo.png',
+        'logo': 'myapp/images/Logo.png',
     }
     return render(request, "myapp/help.html", context)
 
@@ -113,10 +113,39 @@ def image(request):
         'app_css': 'myapp/css/styles.css',
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
-        'image': 'myapp/images/Logo.png',
+        'logo': 'myapp/images/Logo.png',
         'images': images,	
     }
     return render(request, "myapp/image.html", context)
+
+def singleImage(request, id):
+    image = XImage.objects.get(id=id)
+    context = {
+        'title': 'WeeAI - Image',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+        'image': image,	
+    }
+    return render(request, "myapp/image/singleImage.html", context)
+
+def uploaderImage(request, uploader):
+    images = XImage.objects.filter(uploader=uploader)
+    context = {
+        'title': 'WeeAI - Image',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+        'images': images,	
+    }
+    return render(request, "myapp/image/uploaderImage.html", context)
+
 
 def about(request):
     context = {
@@ -126,7 +155,7 @@ def about(request):
         'app_css': 'myapp/css/styles.css',
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
-        'image': 'myapp/images/Logo.png',
+        'logo': 'myapp/images/Logo.png',
     }
     return render(request, "myapp/about.html", context)
 
@@ -138,7 +167,7 @@ def signin(request):
         'app_css': 'myapp/css/styles.css',
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
-        'image': 'myapp/images/Logo.png',
+        'logo': 'myapp/images/Logo.png',
     }
     return render(request, "myapp/signin.html", context)
 
@@ -150,7 +179,7 @@ def signup(request):
         'app_css': 'myapp/css/styles.css',
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
-        'image': 'myapp/images/Logo.png',
+        'logo': 'myapp/images/Logo.png',
     }
     return render(request, "myapp/signup.html", context)
 
@@ -162,6 +191,6 @@ def profile(request):
         'app_css': 'myapp/css/styles.css',
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
-        'image': 'myapp/images/Logo.png',
+        'logo': 'myapp/images/Logo.png',
     }
     return render(request, "myapp/profile.html", context)

@@ -2,11 +2,10 @@
 {% load static %}
 
 {% block container %}
-{% for image in images %}
-    <div>
+<div>
         <h1>{{ image.title }} - date {{ image.date }}</h1>
         <p>{{ image.pathImage }} - Uploaded by <a href="{% url 'myapp:uploaderImage' image.uploader %}">{{ image.uploader }}</a></p>
         <a href="{% url 'myapp:singleImage' image.id %}">Details</a>
     </div>
-{% endfor %}
+
 {% endblock container %}
