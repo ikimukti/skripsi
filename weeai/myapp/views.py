@@ -1,22 +1,22 @@
+from datetime import datetime
 from django.shortcuts import render
 from .models import XImage
+from django.utils.text import slugify
+from . import forms
 
 menus = [
     {'name': 'Home', 'url': '/'},
     {'name': 'Dashboard', 'url': '/dashboard/'},
-    {'name': 'Docs', 'url': '/docs/'},
-    {'name': 'Blog', 'url': '/blog/'},
-    {'name': 'Setting', 'url': '/setting/'},
-    {'name': 'Help', 'url': '/help/'},
-    {'name': 'About', 'url': '/about/'},
     {'name': 'Sign In', 'url': '/signin/'},
     {'name': 'Sign Up', 'url': '/signup/'},
     {'name': 'Sign Out', 'url': '/signout/'},
-    {'name': 'Profile', 'url': '/profile/'},
+    {'name': 'Account', 'url': '/account/', 'submenus': [
+        {'name': 'Profile', 'url': '/account/profile/'},
+    ]},
     {'name': 'Image', 'url': '/image/', 'submenus': [
         {'name': 'Upload', 'url': '/image/upload/'},
         {'name': 'Manage', 'url': '/image/manage/'},
-        {'name': 'Report', 'url': '/image/report/'},
+        {'name': 'Summary', 'url': '/image/summary/'},
     ]},
     # submenus manage
     {'name': 'Manage', 'url': '/manage/', 'submenus': [
@@ -25,8 +25,17 @@ menus = [
         {'name': 'Permission', 'url': '/manage/permission/'},
     ]},
     {'name': 'Report', 'url': '/report/', 'submenus': [
+        {'name': 'Segmentation', 'url': '/report/segmentation/'},
         {'name': 'Export Image', 'url': '/report/image/'},
         {'name': 'Export Report', 'url': '/report/report/'},
+        {'name': 'Summary', 'url': '/report/summary/'},
+    ]},
+    {'name': 'Preference', 'url': '/preference/', 'submenus': [
+        {'name': 'Setting', 'url': '/preference/setting/'},
+        {'name': 'Help', 'url': '/help/'},
+        {'name': 'Docs', 'url': '/docs/'},
+        {'name': 'Blog', 'url': '/blog/'},
+        {'name': 'About', 'url': '/about/'},
     ]},
 ]
 
@@ -118,10 +127,33 @@ def image(request):
     }
     return render(request, "myapp/image.html", context)
 
-def singleImage(request, id):
+
+
+def imageUpload(request):
+    ImageUploadForm = forms.ImageUploadForm()
+
+    context = {
+        'title': 'WeeAI - Image Upload',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+        'ImageUploadForm': ImageUploadForm,
+    }
+    if request.method == 'POST':
+        form = forms.ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            myimage = form.cleaned_data['file']
+            print(myimage)
+        print(request.FILES)
+    return render(request, "myapp/image/imageUpload.html", context)
+
+def imageSingle(request, id):
     image = XImage.objects.get(id=id)
     context = {
-        'title': 'WeeAI - Image',
+        'title': 'WeeAI - Image Single',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -130,12 +162,12 @@ def singleImage(request, id):
         'logo': 'myapp/images/Logo.png',
         'image': image,	
     }
-    return render(request, "myapp/image/singleImage.html", context)
+    return render(request, "myapp/image/imageSingle.html", context)
 
-def uploaderImage(request, uploader):
+def imageUploader(request, uploader):
     images = XImage.objects.filter(uploader=uploader)
     context = {
-        'title': 'WeeAI - Image',
+        'title': 'WeeAI - Image Uploader',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -144,8 +176,35 @@ def uploaderImage(request, uploader):
         'logo': 'myapp/images/Logo.png',
         'images': images,	
     }
-    return render(request, "myapp/image/uploaderImage.html", context)
+    return render(request, "myapp/image/imageUploader.html", context)
 
+def imageSummary(request):
+    images = XImage.objects.all()
+    context = {
+        'title': 'WeeAI - Image Summary',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+        'images': images,	
+    }
+    return render(request, "myapp/image/imageSummary.html", context)
+
+def imageManage(request):
+    images = XImage.objects.all()
+    context = {
+        'title': 'WeeAI - Image Manage',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+        'images': images,	
+    }
+    return render(request, "myapp/image/imageManage.html", context)
 
 def about(request):
     context = {
@@ -183,7 +242,31 @@ def signup(request):
     }
     return render(request, "myapp/signup.html", context)
 
-def profile(request):
+def signout(request):
+    context = {
+        'title': 'WeeAI - Sign Out',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/signout.html", context)
+
+def account(request):
+    context = {
+        'title': 'WeeAI - Account',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/account.html", context)
+
+def accountProfile(request):
     context = {
         'title': 'WeeAI - Profile',
         'content': 'Welcome to WeeAI!',
@@ -193,4 +276,4 @@ def profile(request):
         'menus': menus,
         'logo': 'myapp/images/Logo.png',
     }
-    return render(request, "myapp/profile.html", context)
+    return render(request, "myapp/account/profile.html", context)

@@ -5,7 +5,7 @@
 {% for image in images %}
     <div>
         <h1>{{ image.title }} - date {{ image.date }}</h1>
-        <p>{{ image.pathImage }} - Uploaded by <a href="{% url 'myapp:uploaderImage' image.uploader %}">{{ image.uploader }}</a></p>
+        <p>{{ image.pathImage }} - Uploaded by <a href="{% url 'myapp:imageUploader' image.uploader %}">{{ image.uploader }}</a></p>
         <a href="{% url 'myapp:image' %}">Back</a>
     </div>
 {% endfor %}

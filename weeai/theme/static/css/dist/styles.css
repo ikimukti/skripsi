@@ -733,6 +733,10 @@ select {
   display: flex;
 }
 
+.table {
+  display: table;
+}
+
 .h-screen {
   height: 100vh;
 }
