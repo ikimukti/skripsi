@@ -26,8 +26,8 @@ menus = [
     ]},
     {'name': 'Report', 'url': '/report/', 'submenus': [
         {'name': 'Segmentation', 'url': '/report/segmentation/'},
-        {'name': 'Export Image', 'url': '/report/image/'},
-        {'name': 'Export Report', 'url': '/report/report/'},
+        {'name': 'Export Image', 'url': '/report/export/image/'},
+        {'name': 'Export Report', 'url': '/report/export/report/'},
         {'name': 'Summary', 'url': '/report/summary/'},
     ]},
     {'name': 'Preference', 'url': '/preference/', 'submenus': [
@@ -99,7 +99,7 @@ def setting(request):
         'menus': menus,
         'logo': 'myapp/images/Logo.png',
     }
-    return render(request, "myapp/setting.html", context)
+    return render(request, "myapp/preference/preferenceSetting.html", context)
 
 def help(request):
     context = {
@@ -125,7 +125,7 @@ def image(request):
         'logo': 'myapp/images/Logo.png',
         'images': images,	
     }
-    return render(request, "myapp/image.html", context)
+    return render(request, "myapp/image/image.html", context)
 
 
 
@@ -228,7 +228,7 @@ def signin(request):
         'menus': menus,
         'logo': 'myapp/images/Logo.png',
     }
-    return render(request, "myapp/signin.html", context)
+    return render(request, "myapp/system/signin.html", context)
 
 def signup(request):
     context = {
@@ -240,7 +240,7 @@ def signup(request):
         'menus': menus,
         'logo': 'myapp/images/Logo.png',
     }
-    return render(request, "myapp/signup.html", context)
+    return render(request, "myapp/system/signup.html", context)
 
 def signout(request):
     context = {
@@ -252,7 +252,7 @@ def signout(request):
         'menus': menus,
         'logo': 'myapp/images/Logo.png',
     }
-    return render(request, "myapp/signout.html", context)
+    return render(request, "myapp/system/signout.html", context)
 
 def account(request):
     context = {
@@ -264,7 +264,7 @@ def account(request):
         'menus': menus,
         'logo': 'myapp/images/Logo.png',
     }
-    return render(request, "myapp/account.html", context)
+    return render(request, "myapp/account/account.html", context)
 
 def accountProfile(request):
     context = {
@@ -277,3 +277,135 @@ def accountProfile(request):
         'logo': 'myapp/images/Logo.png',
     }
     return render(request, "myapp/account/profile.html", context)
+
+def manage(request):
+    context = {
+        'title': 'WeeAI - Manage',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/manage/manage.html", context)
+
+def manageUser(request):
+    context = {
+        'title': 'WeeAI - Manage User',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/manage/manageUser.html", context)
+
+def manageRole(request):
+    context = {
+        'title': 'WeeAI - Manage Role',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/manage/manageRole.html", context)
+
+def managePermission(request):
+    context = {
+        'title': 'WeeAI - Manage Permission',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/manage/managePermission.html", context)
+
+def report(request):
+    context = {
+        'title': 'WeeAI - Report',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/report/report.html", context)
+
+def reportSegmentation(request):
+    context = {
+        'title': 'WeeAI - Segmentation Report',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/report/reportSegmentation.html", context)
+
+def reportExportImage(request):
+    context = {
+        'title': 'WeeAI - Export Image Report',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/report/reportExportImage.html", context)
+
+def reportExportReport(request):
+    context = {
+        'title': 'WeeAI - Export Report',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/report/reportExportReport.html", context)
+
+def reportSummary(request):
+    context = {
+        'title': 'WeeAI - Summary Report',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/report/reportSummary.html", context)
+
+def preference(request):
+    context = {
+        'title': 'WeeAI - Preference',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/preference/preference.html", context)
+
+def preferenceSetting(request):
+    context = {
+        'title': 'WeeAI - Setting',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/preference/preferenceSetting.html", context)
