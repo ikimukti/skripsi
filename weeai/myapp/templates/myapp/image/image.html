@@ -2,11 +2,29 @@
 {% load static %}
 
 {% block container %}
-{% for image in images %}
+{% for report in reportSegmentation %}
+    <div class="flex">
+        <div class="flex flex-col">
+            <img src="{% static 'myapp/images/' %}{{ report.idImage.pathImage }}" alt="{{ report.idImage.pathImage }}" width="200" height="200">
+            <p>Asli</p>
+        </div>
+        <div class="flex flex-col">
+            <img src="{% static 'myapp/images/' %}{{ report.pathSegmentationKMeans }}" alt="{{ report.pathSegmentationKMeans }}" width="200" height="200">
+            <p>KMeans</p>
+        </div>
+        <div class="flex flex-col">
+            <img src="{% static 'myapp/images/' %}{{ report.pathSegmentationAdaptive }}" alt="{{ report.pathSegmentationAdaptive }}" width="200" height="200">
+            <p>Adaptive</p>
+        </div>
+        <div class="flex flex-col">
+            <img src="{% static 'myapp/images/' %}{{ report.pathGroundTruth }}" alt="{{ report.pathGroundTruth }}" width="200" height="200">
+            <p>Ground Truth</p>
+        </div>
+    </div>
     <div>
-        <h1>{{ image.title }} - date {{ image.date }}</h1>
-        <p>{{ image.pathImage }} - Uploaded by <a href="{% url 'myapp:imageUploader' image.uploader %}">{{ image.uploader }}</a></p>
-        <a href="{% url 'myapp:imageSingle' image.id %}">Details</a>
+        {{ report.report.kmeans }}
+        <br>
+        {{ report.report.adaptive }}
     </div>
 {% endfor %}
 {% endblock container %}

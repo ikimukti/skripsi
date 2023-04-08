@@ -2,10 +2,17 @@
 {% load static %}
 
 {% block container %}
-<form method="post">
+<form method="post" enctype="multipart/form-data" class="w-1/2 mx-auto mt-10">
     {% csrf_token %}
-    {{ ImageUploadForm }}
-    <br />
-    <button type="submit">Upload</button>
+    <h1 class="text-2xl font-bold">Upload Image</h1>
+    <label for="image" class="text-xl">{{ ImageUploadForm.image.label_tag }}</label>
+    {{ ImageUploadForm.image }}
+    <p>{{ ImageUploadForm.image.help_text }}</p>
+    <p>{{ ImageUploadForm.image.errors }}</p>
+    <label for="uploader" class="text-xl">{{ ImageUploadForm.uploader.label_tag }}</label>
+    {{ ImageUploadForm.uploader }}
+    <p>{{ ImageUploadForm.uploader.help_text }}</p>
+    <p>{{ ImageUploadForm.uploader.errors }}</p>
+    <button type="submit" class="bg-slate-500 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded">Upload</button>
 </form>
 {% endblock container %}
