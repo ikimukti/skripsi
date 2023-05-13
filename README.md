@@ -26,11 +26,21 @@ skripsi is a simple project for my thesis in the university of PGRI Kediri.
 19. open new terminal and cd to the project "cd skripsi/weeai" and run the server "python manage.py runserver"
 20. open the browser and go to "http://127.0.0.1:8000/"
 21. create superuser "python manage.py createsuperuser"
+    ```
     Username (leave blank to use 'ikimu'): admin
     Email address: iki.mukti@gmail.com
-    Password: **********
+    Password: *********
     Password (again): *********
     Superuser created successfully.
+    ```
 22. open the browser and go to "http://127.0.0.1:8000/admin"
 23. login with superuser "admin" and password "*********"
+
+# How to run the project on your local machine
+1. Turn on the virtual environment windows "env\Scripts\activate.bat" linux "source env/bin/activate"
+2. cd to the project "cd skripsi"
+3. cd to the project "cd weeai"
+4. Start the development server by running tailwind "python manage.py tailwind start"
+5. open new terminal and cd to the project "cd skripsi/weeai" and run the server "python manage.py runserver"
+6. open the browser and go to "http://127.0.0.1:8000/"
 
