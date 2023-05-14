@@ -35,6 +35,48 @@ skripsi is a simple project for my thesis in the university of PGRI Kediri.
     ```
 22. open the browser and go to "http://127.0.0.1:8000/admin"
 23. login with superuser "admin" and password "*********"
+24. Nice, you can use the project
+
+# How to install and use Font Awesome Free with Django
+1. Open terminal and cd to the project "cd skripsi"
+2. Turn on the virtual environment windows "env\Scripts\activate.bat" linux "source env/bin/activate"
+3. Install Font Awesome Free "pip install --upgrade fontawesome-free"
+4. Add fontawesome to INSTALLED_APPS in settings.py
+    ```
+    INSTALLED_APPS = [
+        ...
+        'fontawesome-free',
+        ...
+    ]
+    ```
+5. Collect the static files "python manage.py collectstatic"
+    ```
+    You have requested to collect static files at the destination
+    location as specified in your settings:
+
+        C:\Users\iki\Documents\GitHub\skripsi\weeai\static
+    
+    This will overwrite existing files!
+    Are you sure you want to do this?
+
+    Type 'yes' to continue, or 'no' to cancel: yes
+    ```
+6. Link the Styles you need in your base.html
+    ```
+    <!-- Our project just needs Font Awesome Free's Solid and Brand files -->
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+    ```
+7. Load the Font Awesome tags in your base.html
+    ```
+    {% load static %}
+    ```
+8. To use Font Awesome icons, add the following to your base.html
+    ```
+    <i class="fas fa-camera-retro"></i>
+    ```
+9. Finish 
 
 # How to run the project on your local machine
 1. Turn on the virtual environment windows "env\Scripts\activate.bat" linux "source env/bin/activate"
@@ -43,4 +85,5 @@ skripsi is a simple project for my thesis in the university of PGRI Kediri.
 4. Start the development server by running tailwind "python manage.py tailwind start"
 5. open new terminal and cd to the project "cd skripsi/weeai" and run the server "python manage.py runserver"
 6. open the browser and go to "http://127.0.0.1:8000/"
+7. Nice, you can use the project
 

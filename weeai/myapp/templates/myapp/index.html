@@ -1,55 +1,22 @@
+{% extends "myapp/core_base.html" %}
 {% load static %}
-{% load static tailwind_tags %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-    {% tailwind_css %}
-    <link rel="stylesheet" href="{% static app_css %}">
-</head>
-<body>
-    <div class="container-fluid mx-auto bg-slate-700 h-screen">
-        <div class="bg-gradient-to-r from-blue-400 to-blue-600">
-            <div class="flex justify-between items-center px-4 py-2">
-                <div class="flex items-center">
-                    <img src="{% static logo %}" alt="Logo" class="w-6 mr-2">
-                    <a href="#" class="uppercase text-white font-bold text-lg">WeeAI</a>
-                </div>
-                <div>
-                    <button class="focus:outline-none text-white block lg:hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-            <div class="flex px-4">
-                <div class="flex flex-col md:flex-row md:justify-between md:items-center">
-                    <a href="#" class="block">Dashboard</a>
-                    <a href="#" class="block">Projects</a>
-                    <a href="#" class="block">Team</a>
-                    <a href="#" class="block">Docs</a>
-                    <a href="#" class="block">Settings</a>
-                    <a href="#" class="block">About</a>
-                    <a href="#" class="block">Contact</a>
-                    <a href="#" class="block">Help</a>
-                </div>
-                <div >
-                    <a href="#" class="block">Sign In</a>
-                    <a href="#" class="block">Sign Up</a>
-                </div>
-            </div>
+
+{% block container %}
+<div class="flex flex-col justify-center items-center">
+    <div class="flex flex-col justify-center items-center gap-4">
+        <h1 class="text-5xl font-bold text-gray-900">Selamat Datang di
+            <span class="bg-gradient-to-t from-fuchsia-500 to-stone-400 bg-clip-text text-transparent">WEEAI</span>
+        </h1>
+        <p class="text-1xl text-gray-600 px-24 text-center">
+            WeeAI adalah sebuah platform yang menyediakan layanan untuk memprediksi membantu anda melakukan simulasi segmentasi citra dengan menggunakan algoritma
+            <span class="bg-gradient-to-t from-red-500 to-red-400 bg-clip-text text-transparent">K-Means</span>dan 
+            <span class="bg-gradient-to-t from-red-500 to-red-400 bg-clip-text text-transparent">Adapative Thresholding</span>.
+            Sebagai identifikasi awal, anda dapat memilih salah satu dari dua metode tersebut untuk melakukan segmentasi citra.
+        </p>
+        <div class="flex flex-row justify-center items-center">
+            <a href="{% url 'myapp:signin' %}" class="bg-blue-400 text-white px-4 py-2 rounded mx-2 hover:bg-blue-600">Sign In</a>
+            <a href="{% url 'myapp:signup' %}" class="bg-blue-400 text-white px-4 py-2 rounded mx-2 hover:bg-blue-600">Sign Up</a>
         </div>
-        <div class="flex flex-col items-center justify-center inset-0">
-            <img src="{% static logo %}" alt="Logo" class="w-16">
-            <h1 class="text-4xl font-bold text-center text-white">{{ title }}</h1>
-            <p class="text-xl text-center text-white">{{ content }}</p>
-        </div>
-        {% include 'myapp/snippets/footer.html' %}
     </div>
-    {% include 'myapp/snippets/scripts.html' %}
-</body>
-</html>
+</div>
+{% endblock container %}

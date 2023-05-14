@@ -1,0 +1,64 @@
+{% load static %}
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    {% tailwind_css %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+    
+    <link rel="stylesheet" href="{% static app_css %}">
+</head>
+<body class="font-inter h-screen">
+    <div class="flex flex-col h-screen justify-between">
+        <div class="flex flex-col justify-start items-center top-0 fixed w-full z-10">
+            {% include 'myapp/snippets/navbar.html' %}
+        </div>
+        <!-- fixed sidebar Menu and content overflow -->
+        <div class="flex flex-col justify-center items-center">
+            <!-- fixed sidebar Menu -->
+            {% include 'myapp/snippets/sidebar.html' %}
+            <!-- content overflow -->
+            {% block content %} {% endblock content %}
+            
+        </div>
+        <!-- footer top z-index -->
+        <div class="flex flex-col justify-center items-center bg-white w-full fixed bottom-0">
+            {% include 'myapp/snippets/footer.html' %}
+        </div>
+    </div>
+    {% include 'myapp/snippets/scripts.html' %}
+    <script text="text/javascript">
+        function toggleMenu() {
+            const menu = document.querySelector('#toogleMenu');
+            menu.classList.toggle('hidden');
+            // toogle content from 5/6 to 6/6
+            const content = document.querySelector('#content');
+            content.classList.toggle('w-5/6');
+            content.classList.toggle('w-full');
+            
+        }
+
+        function toogleAccountMenu() {
+            const accountMenu = document.querySelector('#accountMenu');
+            accountMenu.classList.toggle('hidden');
+        }
+
+        function toggleDropdown(id) {
+            const dropdownMenu = document.querySelector(`#dropdown-menu-${id}`);
+            const dropdownIcon = document.querySelector(`#dropdown-icon-${id}`);
+            dropdownMenu.classList.toggle('hidden');
+            dropdownIcon.classList.toggle('rotate-180');
+        }
+    </script>
+</body>
+</html>

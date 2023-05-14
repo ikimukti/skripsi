@@ -12,37 +12,41 @@ from django.utils.text import slugify
 from . import forms
 
 menus = [
-    {'name': 'Home', 'url': '/'},
-    {'name': 'Dashboard', 'url': '/dashboard/'},
-    {'name': 'Sign In', 'url': '/signin/'},
-    {'name': 'Sign Up', 'url': '/signup/'},
-    {'name': 'Sign Out', 'url': '/signout/'},
-    {'name': 'Account', 'url': '/account/', 'submenus': [
-        {'name': 'Profile', 'url': '/account/profile/'},
+    {'name': 'Dashboard', 'url': '/dashboard/', 'icon': 'fas fa-tachometer-alt', 'id': 'dashboard'},
+    
+    {'name': 'Account', 'url': '/account/', 'icon': 'fas fa-user', 'dropdown': True, 'id': 'account'
+    ,'submenus': [
+        {'name': 'Profile', 'url': '/account/profile/', 'icon': 'fas fa-user-circle', 'id': 'accountProfile'},
+        {'name': 'Password', 'url': '/account/password/', 'icon': 'fas fa-key', 'id': 'accountPassword'},
     ]},
-    {'name': 'Image', 'url': '/image/', 'submenus': [
-        {'name': 'Upload', 'url': '/image/upload/'},
-        {'name': 'Manage', 'url': '/image/manage/'},
-        {'name': 'Summary', 'url': '/image/summary/'},
+    {'name': 'Images', 'url': '/image/', 'icon': 'fas fa-image', 'dropdown': True, 'id': 'image'
+    ,'submenus': [
+        {'name': 'Upload', 'url': '/image/upload/', 'icon': 'fas fa-upload', 'id': 'imageUpload'},
+        {'name': 'Summary', 'url': '/image/summary/', 'icon': 'fas fa-chart-bar', 'id': 'imageSummary'},
+        {'name': 'Manage', 'url': '/image/manage/', 'icon': 'fas fa-cog', 'id': 'imageManage'},
     ]},
     # submenus manage
-    {'name': 'Manage', 'url': '/manage/', 'submenus': [
-        {'name': 'User', 'url': '/manage/user/'},
-        {'name': 'Role', 'url': '/manage/role/'},
-        {'name': 'Permission', 'url': '/manage/permission/'},
+    {'name': 'Manage', 'url': '/manage/', 'icon': 'fas fa-cogs', 'dropdown': True, 'id': 'manage'
+    ,'submenus': [
+        {'name': 'User', 'url': '/manage/user/', 'icon': 'fas fa-user', 'id': 'manageUser'},
+        {'name': 'Role', 'url': '/manage/role/', 'icon': 'fas fa-user-tag', 'id': 'manageRole'},
+        {'name': 'Permission', 'url': '/manage/permission/', 'icon': 'fas fa-user-lock', 'id': 'managePermission'},
     ]},
-    {'name': 'Report', 'url': '/report/', 'submenus': [
-        {'name': 'Segmentation', 'url': '/report/segmentation/'},
-        {'name': 'Export Image', 'url': '/report/export/image/'},
-        {'name': 'Export Report', 'url': '/report/export/report/'},
-        {'name': 'Summary', 'url': '/report/summary/'},
+    {'name': 'Reports', 'url': '/report/', 'icon': 'fas fa-chart-bar', 'dropdown': True, 'id': 'report'
+    ,'submenus': [
+        {'name': 'Segmentation', 'url': '/report/segmentation/', 'icon': 'fas fa-chart-pie', 'id': 'reportSegmentation'},
+        {'name': 'Export Image', 'url': '/report/export/image/', 'icon': 'fas fa-file-image', 'id': 'reportExportImage'},
+        {'name': 'Export Report', 'url': '/report/export/report/', 'icon': 'fas fa-file-pdf', 'id': 'reportExportReport'},
+        {'name': 'Summary', 'url': '/report/summary/', 'icon': 'fas fa-chart-bar', 'id': 'reportSummary'},
     ]},
-    {'name': 'Preference', 'url': '/preference/', 'submenus': [
-        {'name': 'Setting', 'url': '/preference/setting/'},
-        {'name': 'Help', 'url': '/help/'},
-        {'name': 'Docs', 'url': '/docs/'},
-        {'name': 'Blog', 'url': '/blog/'},
-        {'name': 'About', 'url': '/about/'},
+    {'name': 'Preferences', 'url': '/preference/', 'icon': 'fas fa-cog', 'dropdown': True, 'id': 'preference'
+    ,'submenus': [
+        {'name': 'Setting', 'url': '/preference/setting/', 'icon': 'fas fa-cog', 'id': 'preferenceSetting'},
+        {'name': 'Help', 'url': '/help/', 'icon': 'fas fa-question-circle', 'id': 'preferenceHelp'},
+        {'name': 'Docs', 'url': '/docs/', 'icon': 'fas fa-book', 'id': 'preferenceDocs'},
+        {'name': 'Blog', 'url': '/blog/', 'icon': 'fas fa-blog', 'id': 'preferenceBlog'},
+        {'name': 'Contact', 'url': '/contact/', 'icon': 'fas fa-phone', 'id': 'preferenceContact'},
+        {'name': 'About', 'url': '/about/', 'icon': 'fas fa-info-circle', 'id': 'preferenceAbout'},
     ]},
 ]
 
@@ -50,7 +54,7 @@ menus = [
 # Create your views here.
 def index(request):
     context = {
-        'title': 'WeeAI - Home',
+        'title': 'Home',
         'content': 'Welcome to WeeAI!',
         'app_css': 'myapp/css/styles.css',
         'contributor': 'WeeAI Team',
@@ -60,9 +64,21 @@ def index(request):
     }
     return render(request, "myapp/index.html", context)
 
+def contact(request):
+    context = {
+        'title': 'Contact',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/contact.html", context)
+
 def dashboard(request):
     context = {
-        'title': 'WeeAI - Dashboard',
+        'title': 'Dashboard',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -74,7 +90,7 @@ def dashboard(request):
 
 def docs(request):
     context = {
-        'title': 'WeeAI - Docs',
+        'title': 'Docs',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -86,19 +102,24 @@ def docs(request):
 
 def blog(request):
     context = {
-        'title': 'WeeAI - Blog',
+        'title': 'Blog',
         'contributor': 'WeeAI Team',
         'content': 'Welcome to WeeAI!',
         'app_css': 'myapp/css/styles.css',
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
         'logo': 'myapp/images/Logo.png',
+        'posts': [
+            {'title': 'Blog Post 1', 'url': '/blog/post1/', 'content': 'Welcome to WeeAI!','author': 'WeeAI Team','date_posted': 'August 27, 2018'},
+            {'title': 'Blog Post 2', 'url': '/blog/post2/', 'content': 'Welcome to WeeAI!','author': 'WeeAI Team','date_posted': 'August 28, 2018'},
+            {'title': 'Blog Post 3', 'url': '/blog/post3/', 'content': 'Welcome to WeeAI!','author': 'WeeAI Team','date_posted': 'August 29, 2018'},
+        ],
     }
     return render(request, "myapp/blog.html", context)
 
 def setting(request):
     context = {
-        'title': 'WeeAI - Setting',
+        'title': 'Setting',
         'contributor': 'WeeAI Team',
         'content': 'Welcome to WeeAI!',
         'app_css': 'myapp/css/styles.css',
@@ -110,7 +131,7 @@ def setting(request):
 
 def help(request):
     context = {
-        'title': 'WeeAI - Help',
+        'title': 'Help',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -123,7 +144,7 @@ def help(request):
 def image(request):
     reportSegmentation = XSegmentationResult.objects.select_related('idImage').all()
     context = {
-        'title': 'WeeAI - Image',
+        'title': 'Image',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -140,7 +161,7 @@ def imageUpload(request):
     ImageUploadForm = forms.ImageUploadForm()
 
     context = {
-        'title': 'WeeAI - Image Upload',
+        'title': 'Image Upload',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -208,7 +229,7 @@ def imageUpload(request):
 def imageSingle(request, id):
     image = XImage.objects.get(id=id)
     context = {
-        'title': 'WeeAI - Image Single',
+        'title': 'Image Single',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -222,7 +243,7 @@ def imageSingle(request, id):
 def imageUploader(request, uploader):
     images = XImage.objects.filter(uploader=uploader)
     context = {
-        'title': 'WeeAI - Image Uploader',
+        'title': 'Image Uploader',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -236,7 +257,7 @@ def imageUploader(request, uploader):
 def imageSummary(request):
     images = XImage.objects.all()
     context = {
-        'title': 'WeeAI - Image Summary',
+        'title': 'Image Summary',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -250,7 +271,7 @@ def imageSummary(request):
 def imageManage(request):
     images = XImage.objects.all()
     context = {
-        'title': 'WeeAI - Image Manage',
+        'title': 'Image Manage',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -263,7 +284,7 @@ def imageManage(request):
 
 def about(request):
     context = {
-        'title': 'WeeAI - About',
+        'title': 'About',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -275,7 +296,7 @@ def about(request):
 
 def signin(request):
     context = {
-        'title': 'WeeAI - Sign In',
+        'title': 'Sign In',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -287,7 +308,7 @@ def signin(request):
 
 def signup(request):
     context = {
-        'title': 'WeeAI - Sign Up',
+        'title': 'Sign Up',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -299,7 +320,7 @@ def signup(request):
 
 def signout(request):
     context = {
-        'title': 'WeeAI - Sign Out',
+        'title': 'Sign Out',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -311,7 +332,7 @@ def signout(request):
 
 def account(request):
     context = {
-        'title': 'WeeAI - Account',
+        'title': 'Account',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -323,7 +344,7 @@ def account(request):
 
 def accountProfile(request):
     context = {
-        'title': 'WeeAI - Profile',
+        'title': 'Profile',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -333,9 +354,21 @@ def accountProfile(request):
     }
     return render(request, "myapp/account/profile.html", context)
 
+def accountPassword(request):
+    context = {
+        'title': 'Password',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/account.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/account/password.html", context)
+
 def manage(request):
     context = {
-        'title': 'WeeAI - Manage',
+        'title': 'Manage',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -347,7 +380,7 @@ def manage(request):
 
 def manageUser(request):
     context = {
-        'title': 'WeeAI - Manage User',
+        'title': 'Manage User',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -359,7 +392,7 @@ def manageUser(request):
 
 def manageRole(request):
     context = {
-        'title': 'WeeAI - Manage Role',
+        'title': 'Manage Role',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -371,7 +404,7 @@ def manageRole(request):
 
 def managePermission(request):
     context = {
-        'title': 'WeeAI - Manage Permission',
+        'title': 'Manage Permission',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -383,7 +416,7 @@ def managePermission(request):
 
 def report(request):
     context = {
-        'title': 'WeeAI - Report',
+        'title': 'Report',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -395,7 +428,7 @@ def report(request):
 
 def reportSegmentation(request):
     context = {
-        'title': 'WeeAI - Segmentation Report',
+        'title': 'Segmentation Report',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -407,7 +440,7 @@ def reportSegmentation(request):
 
 def reportExportImage(request):
     context = {
-        'title': 'WeeAI - Export Image Report',
+        'title': 'Export Image Report',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -419,7 +452,7 @@ def reportExportImage(request):
 
 def reportExportReport(request):
     context = {
-        'title': 'WeeAI - Export Report',
+        'title': 'Export Report',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -431,7 +464,7 @@ def reportExportReport(request):
 
 def reportSummary(request):
     context = {
-        'title': 'WeeAI - Summary Report',
+        'title': 'Summary Report',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -443,7 +476,7 @@ def reportSummary(request):
 
 def preference(request):
     context = {
-        'title': 'WeeAI - Preference',
+        'title': 'Preference',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
@@ -455,7 +488,7 @@ def preference(request):
 
 def preferenceSetting(request):
     context = {
-        'title': 'WeeAI - Setting',
+        'title': 'Setting',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',

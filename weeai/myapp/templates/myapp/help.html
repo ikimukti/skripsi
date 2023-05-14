@@ -1,6 +1,69 @@
-{% extends "myapp/base.html" %}
+{% extends "myapp/core_base.html" %}
 {% load static %}
 
 {% block container %}
-
+<div class="flex flex-col justify-center items-center w-full">
+    <!-- help -->
+    <div class="w-full max-w-xs md:max-w-sm lg:max-w-4xl rounded overflow-hidden my-2 h-[500px] bg-white shadow-md">
+        <div class=" px-8 pt-6 pb-4">
+            <h1 class="text-2xl font-bold mb-2">{{ title }}</h1>
+            <!-- get help desciption -->
+            <p class="text-gray-700 text-base mb-2">
+                Help is available for those who need it. If you are in need of help, please contact us. We will do our best to help you. <a href="tel:{{ phone_number }}" class="text-blue-500">Call us</a> or <a href="mailto:{{ email }}" class="text-blue-500">email us</a> for more information. Below are some general helps:
+            </p>
+            <!-- Referensi bantuan populer -->
+            <ul role="list" class="marker:text-sky-400 list-disc pl-5 space-y-3 text-slate-500 mt-5">
+                <!-- Membuat akun untuk pengguna baru -->
+                <li class="flex items-start">
+                    <i class="fas fa-check-circle text-green-500"></i>
+                    <p class="ml-2">
+                        <span class="font-bold">Membuat akun untuk pengguna baru</span>
+                        <br>
+                        <span class="text-sm">Untuk membuat akun baru, silahkan klik tombol <a href="" class="text-blue-500">Daftar</a> pada halaman utama.</span>
+                    </p>
+                </li>
+                <!-- Mengubah password -->
+                <li class="flex items-start">
+                    <i class="fas fa-check-circle text-green-500"></i>
+                    <p class="ml-2">
+                        <span class="font-bold">Mengubah password</span>
+                        <br>
+                        <span class="text-sm">Untuk mengubah password, silahkan klik tombol <a href="" class="text-blue-500">Ubah Password</a> pada halaman utama.</span>
+                    </p>
+                </li>
+                <!-- Mengubah data diri -->
+                <li class="flex items-start">
+                    <i class="fas fa-check-circle text-green-500"></i>
+                    <p class="ml-2">
+                        <span class="font-bold">Mengubah data diri</span>
+                        <br>
+                        <span class="text-sm">Untuk mengubah data diri, silahkan klik tombol <a href="" class="text-blue-500">Ubah Data Diri</a> pada halaman utama.</span>
+                    </p>
+                </li>
+                <!-- Upload citra untuk di segmentasi -->
+                <li class="flex items-start">
+                    <i class="fas fa-check-circle text-green-500"></i>
+                    <p class="ml-2">
+                        <span class="font-bold">Upload citra untuk di segmentasi</span>
+                        <br>
+                        <span class="text-sm">Untuk mengupload citra, silahkan klik tombol <a href="" class="text-blue-500">Upload Citra</a> pada halaman utama.</span>
+                    </p>
+                </li>
+                <!-- Melihat hasil segmentasi -->
+                <li class="flex items-start">
+                    <i class="fas fa-check-circle text-green-500"></i>
+                    <p class="ml-2">
+                        <span class="font-bold">Melihat hasil segmentasi</span>
+                        <br>
+                        <span class="text-sm">Untuk melihat hasil segmentasi, silahkan klik tombol <a href="" class="text-blue-500">Hasil Segmentasi</a> pada halaman utama.</span>
+                    </p>
+                </li>
+                <!-- Melihat riwayat segmentasi -->
+                
+            </ul>
+        </div>
+        <!-- blog list post scrollable -->
+        
+    </div>
+</div>
 {% endblock container %}
