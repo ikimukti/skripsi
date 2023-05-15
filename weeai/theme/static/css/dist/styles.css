@@ -811,6 +811,10 @@ select {
   margin-bottom: 0.75rem;
 }
 
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
 .ml-2 {
   margin-left: 0.5rem;
 }
@@ -853,10 +857,6 @@ select {
 
 .mt-5 {
   margin-top: 1.25rem;
-}
-
-.mb-5 {
-  margin-bottom: 1.25rem;
 }
 
 .block {
@@ -1498,6 +1498,19 @@ select {
 
 .ring-opacity-5 {
   --tw-ring-opacity: 0.05;
+}
+
+/* Chrome, Safari and Opera */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .first-letter\:text-gray-500::first-letter {
