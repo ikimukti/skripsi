@@ -10,6 +10,8 @@ from .models import XImage
 from .models import XSegmentationResult
 from django.utils.text import slugify
 from . import forms
+from django.db.models import OuterRef, Subquery, Q
+from django.core.paginator import Paginator
 
 menus = [
     {'name': 'Dashboard', 'url': '/dashboard/', 'icon': 'fas fa-tachometer-alt', 'id': 'dashboard'},
@@ -52,6 +54,17 @@ menus = [
     ]},
 ]
 
+def modal(request):
+    context = {
+        'title': 'Modal',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/snippets/modal.html", context)
 
 # Create your views here.
 def index(request):
@@ -144,7 +157,43 @@ def help(request):
     return render(request, "myapp/help.html", context)
 
 def image(request):
-    reportSegmentation = XSegmentationResult.objects.select_related('idImage').all()
+    # Mendapatkan XSegmentationResult terkait jika ada (hanya 1) dan buat field baru xsegmentation_result
+    xsegmentation_results = XSegmentationResult.objects.filter(idImage=OuterRef('pk'))
+    # Definisikan semua field yang ingin diambil
+    fields = [
+        'report',
+        'id',
+        'idImage',
+        'pathSegmentationKMeans',
+        'pathSegmentationAdaptive',
+        'pathGroundTruth',
+        'date'
+    ]
+
+    # Buat dictionary comprehension untuk mengambil semua field
+    xsegmentation_result_fields = {
+        f'xsegmentation_result_{field}': Subquery(xsegmentation_results.values(field)[:1])
+        for field in fields
+    }
+
+    # Search bar untuk pencarian
+    if 'q' in request.GET:
+        q = request.GET['q']
+        # Mendapatkan semua objek XImage yang mengandung q di all field
+        # date, id, pathImage, slug, uploader, xsegmentationresult
+        ximages = XImage.objects.filter(
+            Q(date__icontains=q) | Q(id__icontains=q) | Q(pathImage__icontains=q) | Q(slug__icontains=q) | Q(uploader__icontains=q)
+        )
+    else:
+        # Mendapatkan semua objek XImage
+        ximages = XImage.objects.all()
+    # Anotasi XImage dengan field-field yang diambil
+    ximages = ximages.annotate(**xsegmentation_result_fields)
+    # pagination
+    paginator = Paginator(ximages, 10)
+    page_list = request.GET.get('page')
+    ximages = paginator.get_page(page_list)
+
     context = {
         'title': 'Image',
         'content': 'Welcome to WeeAI!',
@@ -153,7 +202,7 @@ def image(request):
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
         'logo': 'myapp/images/Logo.png',
-        'reportSegmentation': reportSegmentation,
+        'images': ximages,
     }
     return render(request, "myapp/image/image.html", context)
 
@@ -285,7 +334,43 @@ def imageManage(request):
     return render(request, "myapp/image/imageManage.html", context)
 
 def imageList(request):
-    reportSegmentation = XSegmentationResult.objects.select_related('idImage').all()
+    # Mendapatkan XSegmentationResult terkait jika ada (hanya 1) dan buat field baru xsegmentation_result
+    xsegmentation_results = XSegmentationResult.objects.filter(idImage=OuterRef('pk'))
+    # Definisikan semua field yang ingin diambil
+    fields = [
+        'report',
+        'id',
+        'idImage',
+        'pathSegmentationKMeans',
+        'pathSegmentationAdaptive',
+        'pathGroundTruth',
+        'date'
+    ]
+
+    # Buat dictionary comprehension untuk mengambil semua field
+    xsegmentation_result_fields = {
+        f'xsegmentation_result_{field}': Subquery(xsegmentation_results.values(field)[:1])
+        for field in fields
+    }
+
+    # Search bar untuk pencarian
+    if 'q' in request.GET:
+        q = request.GET['q']
+        # Mendapatkan semua objek XImage yang mengandung q di all field
+        # date, id, pathImage, slug, uploader, xsegmentationresult
+        ximages = XImage.objects.filter(
+            Q(date__icontains=q) | Q(id__icontains=q) | Q(pathImage__icontains=q) | Q(slug__icontains=q) | Q(uploader__icontains=q)
+        )
+    else:
+        # Mendapatkan semua objek XImage
+        ximages = XImage.objects.all()
+    # Anotasi XImage dengan field-field yang diambil
+    ximages = ximages.annotate(**xsegmentation_result_fields)
+    # pagination
+    paginator = Paginator(ximages, 10)
+    page_list = request.GET.get('page')
+    ximages = paginator.get_page(page_list)
+
     context = {
         'title': 'Image List',
         'content': 'Welcome to WeeAI!',
@@ -294,7 +379,7 @@ def imageList(request):
         'app_js': 'myapp/js/scripts.js',
         'menus': menus,
         'logo': 'myapp/images/Logo.png',
-        'reportSegmentation': reportSegmentation,
+        'images': ximages,
     }
     return render(request, "myapp/image/imageList.html", context)
 

@@ -13,6 +13,7 @@ urlpatterns = [
     path('report/', views.report, name='report'),
     path('preference/setting/', views.preferenceSetting, name='preferenceSetting'),
     path('preference/', views.preference, name='preference'),
+    path('modal/', views.modal, name='modal'),
     path('manage/user/', views.manageUser, name='manageUser'),
     path('manage/role/', views.manageRole, name='manageRole'),
     path('manage/permission/', views.managePermission, name='managePermission'),

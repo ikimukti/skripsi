@@ -59,6 +59,38 @@
             dropdownMenu.classList.toggle('hidden');
             dropdownIcon.classList.toggle('rotate-180');
         }
+
+        function previewImage(event) {
+            var reader = new FileReader();
+            var imageField = document.querySelector('#image-field');
+            var imagePreview = document.querySelector('#image-preview');
+            var imagePreviewCount = document.querySelector('#image-preview-count');
+
+            reader.onload = function() {
+                if (reader.readyState == 2) {
+                    imagePreview.src = reader.result;
+                    imageField.value = reader.result;
+                }
+            }
+
+            if (imageField.files && imageField.files.length > 0) {
+                reader.readAsDataURL(imageField.files[0]);
+                // Change HTML content with the count of selected image files 0/1
+                imagePreviewCount.innerHTML = `${imageField.files.length}/1`;
+            } else {
+                imagePreview.src = "{% static 'myapp/assets/author.png' %}";
+                // Reset HTML content if no image is selected
+                imagePreviewCount.innerHTML = `0/1`;
+            }
+        }
+        // listen for change event on image field
+        document.addEventListener('DOMContentLoaded', function() {
+            // null check
+            var imageField = document.querySelector('#image-field');
+            if (imageField) {
+                imageField.addEventListener('change', previewImage);
+            }
+        });
     </script>
 </body>
 </html>
