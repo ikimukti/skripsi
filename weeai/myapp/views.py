@@ -17,10 +17,11 @@ menus = [
     {'name': 'Account', 'url': '/account/', 'icon': 'fas fa-user', 'dropdown': True, 'id': 'account'
     ,'submenus': [
         {'name': 'Profile', 'url': '/account/profile/', 'icon': 'fas fa-user-circle', 'id': 'accountProfile'},
-        {'name': 'Password', 'url': '/account/password/', 'icon': 'fas fa-key', 'id': 'accountPassword'},
+        {'name': 'Change Password', 'url': '/account/change-password/', 'icon': 'fas fa-key', 'id': 'accountChangePassword'},
     ]},
     {'name': 'Images', 'url': '/image/', 'icon': 'fas fa-image', 'dropdown': True, 'id': 'image'
     ,'submenus': [
+        {'name': 'List', 'url': '/image/list/', 'icon': 'fas fa-list', 'id': 'imageList'},
         {'name': 'Upload', 'url': '/image/upload/', 'icon': 'fas fa-upload', 'id': 'imageUpload'},
         {'name': 'Summary', 'url': '/image/summary/', 'icon': 'fas fa-chart-bar', 'id': 'imageSummary'},
         {'name': 'Manage', 'url': '/image/manage/', 'icon': 'fas fa-cog', 'id': 'imageManage'},
@@ -31,6 +32,7 @@ menus = [
         {'name': 'User', 'url': '/manage/user/', 'icon': 'fas fa-user', 'id': 'manageUser'},
         {'name': 'Role', 'url': '/manage/role/', 'icon': 'fas fa-user-tag', 'id': 'manageRole'},
         {'name': 'Permission', 'url': '/manage/permission/', 'icon': 'fas fa-user-lock', 'id': 'managePermission'},
+        {'name': 'Group', 'url': '/manage/group/', 'icon': 'fas fa-users', 'id': 'manageGroup'},
     ]},
     {'name': 'Reports', 'url': '/report/', 'icon': 'fas fa-chart-bar', 'dropdown': True, 'id': 'report'
     ,'submenus': [
@@ -282,6 +284,20 @@ def imageManage(request):
     }
     return render(request, "myapp/image/imageManage.html", context)
 
+def imageList(request):
+    reportSegmentation = XSegmentationResult.objects.select_related('idImage').all()
+    context = {
+        'title': 'Image List',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+        'reportSegmentation': reportSegmentation,
+    }
+    return render(request, "myapp/image/imageList.html", context)
+
 def about(request):
     context = {
         'title': 'About',
@@ -354,9 +370,9 @@ def accountProfile(request):
     }
     return render(request, "myapp/account/profile.html", context)
 
-def accountPassword(request):
+def accountChangePassword(request):
     context = {
-        'title': 'Password',
+        'title': 'Change Password',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/account.css',
@@ -413,6 +429,18 @@ def managePermission(request):
         'logo': 'myapp/images/Logo.png',
     }
     return render(request, "myapp/manage/managePermission.html", context)
+
+def manageGroup(request):
+    context = {
+        'title': 'Manage Group',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/manageGroup.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
+    return render(request, "myapp/manage/manageGroup.html", context)
 
 def report(request):
     context = {
@@ -476,7 +504,7 @@ def reportSummary(request):
 
 def preference(request):
     context = {
-        'title': 'Preference',
+        'title': 'Preferences',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/styles.css',
