@@ -87,3 +87,79 @@ skripsi is a simple project for my thesis in the university of PGRI Kediri.
 6. open the browser and go to "http://127.0.0.1:8000/"
 7. Nice, you can use the project
 
+# Python Environment packages list (pip freeze) & Visual Studio Code Extensions
+1. pip freeze
+    ```
+    arrow==1.2.3
+    asgiref==3.6.0
+    binaryornot==0.4.4
+    certifi==2022.12.7
+    chardet==5.1.0
+    charset-normalizer==3.1.0
+    click==8.1.3
+    colorama==0.4.6
+    cookiecutter==2.1.1
+    Django==4.2
+    django-browser-reload==1.7.0
+    django-tailwind==3.5.0
+    fontawesomefree==6.4.0
+    idna==3.4
+    Jinja2==3.1.2
+    jinja2-time==0.2.0
+    MarkupSafe==2.1.2
+    mysqlclient==2.1.1
+    numpy==1.24.2
+    opencv-python==4.7.0.72
+    python-dateutil==2.8.2
+    python-slugify==8.0.1
+    PyYAML==6.0
+    requests==2.28.2
+    six==1.16.0
+    sqlparse==0.4.3
+    sweetify==2.3.1
+    text-unidecode==1.3
+    tzdata==2023.3
+    urllib3==1.26.15
+    ```
+2. Visual Studio Code Extensions
+    ```
+    1. Auto Rename Tag (Jun Han) link: https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag
+    2. Code GPT (Code GPT) link: https://marketplace.visualstudio.com/items?itemName=OpenAI.codex
+    3. CSS Formatter (Martin Aeschlimann) link: https://marketplace.visualstudio.com/items?itemName=aeschli.vscode-css-formatter
+    4. CSS Peek (Pranay Prakash) link: https://marketplace.visualstudio.com/items?itemName=pranaygp.vscode-css-peek
+    5. Djaneiro - Django Snippets (Scott Barkman) link: https://marketplace.visualstudio.com/items?itemName=ScottBarkman.djaneiro
+    6. Django (Baptiste Darthenay) link: https://marketplace.visualstudio.com/items?itemName=batisteo.vscode-django
+    7. Django (Roberth Solis) link: https://marketplace.visualstudio.com/items?itemName=roberthsolis.vscode-django
+    8. Django Commands (MaxChamps) link: https://marketplace.visualstudio.com/items?itemName=MaxChamps.vscode-django-commands
+    9. Django Snippets (bibhasdn) link: https://marketplace.visualstudio.com/items?itemName=bibhasdn.django-snippets
+    10. Django Snippets (Siddharth Singha Roy) link: https://marketplace.visualstudio.com/items?itemName=siddharthroy12.django-snippets
+    11. Django Template (bibhasdn) link: https://marketplace.visualstudio.com/items?itemName=bibhasdn.django-html
+    12. django-intellisense (shamanu4) link: https://marketplace.visualstudio.com/items?itemName=shamanu4.django-intellisense
+    13. DotENV (mikestead) link: https://marketplace.visualstudio.com/items?itemName=mikestead.dotenv
+    14. EditorConfig for VS Code (EditorConfig) link: https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig
+    15. Electron Color Theme (Kus Camara) link: https://marketplace.visualstudio.com/items?itemName=kuscamara.electron
+    16. ESLint (Microsoft) link: https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint
+    17. Git Graph (mhutchie) link: https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph
+    18. Git History (Don Jayamanne) link: https://marketplace.visualstudio.com/items?itemName=donjayamanne.githistory
+    19. GitHub Pull Requests and Issues (GitHub) link: https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github
+    20. GitLens — Git supercharged (GitKraken) link: https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens
+    21. HTML CSS Support (ecmel) link: https://marketplace.visualstudio.com/items?itemName=ecmel.vscode-html-css
+    22. HTML Snippets (Mohamed Abusaid) link: https://marketplace.visualstudio.com/items?itemName=abusaidm.html-snippets
+    23. HTML Snippets (geyao) link: https://marketplace.visualstudio.com/items?itemName=geyao.html-snippets
+    24. indent-rainbow (oderwat) link: https://marketplace.visualstudio.com/items?itemName=oderwat.indent-rainbow
+    25. IntelliSense for CSS class names in HTML (Zignd) link: https://marketplace.visualstudio.com/items?itemName=Zignd.html-css-class-completion
+    27. isort (Microsoft) link: https://marketplace.visualstudio.com/items?itemName=ms-python.isort
+    28. Live Preview (Microsoft) link: https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server
+    29. npm (Microsoft) link: https://marketplace.visualstudio.com/items?itemName=eg2.vscode-npm-script
+    30. npm Intellisense (Christian Kohler) link: https://marketplace.visualstudio.com/items?itemName=christian-kohler.npm-intellisense
+    31. PostCSS Language Support (csstools) link: https://marketplace.visualstudio.com/items?itemName=csstools.postcss
+    32. Pylance (Microsoft) link: https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance
+    33. Python (Microsoft) link: https://marketplace.visualstudio.com/items?itemName=ms-python.python
+    34. SQLTools (Matheus Teixeira) link: https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools
+    35. Tailwind CSS IntelliSense (Tailwind Labs) link: https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss
+    36. Tailwind Shades (Omar Bourhaouta) link: https://marketplace.visualstudio.com/items?itemName=omar-bouh.tailwindshades
+    37. Beautify (HookyQR) link: https://marketplace.visualstudio.com/items?itemName=HookyQR.beautify
+    38. GitHub Copilot (GitHub) link: https://marketplace.visualstudio.com/items?itemName=GitHub.copilot
+    39. Prettier - Code formatter (Prettier) link: https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
+    40. Nightly GitHub Copilot (GitHub) link: https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-nightly
+    ```
