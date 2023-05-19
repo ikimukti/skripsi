@@ -22,7 +22,7 @@
     <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none cursor-pointer open-modal" id="open-modal">
         Open Modal
     </button>
-    <div class="h-screen w-full fixed left-0 top-0 flex hidden justify-center items-center bg-gray-900 bg-opacity-50 show-modal" id="show-modal">
+    <div class="h-screen w-full fixed left-0 top-0 hidden justify-center items-center bg-gray-900 bg-opacity-50 show-modal" id="show-modal">
         <!-- modal -->
         <div class="bg-white rounded-md shadow-md w-96">
             <!-- modal header -->
@@ -56,11 +56,13 @@
         
         openModal.addEventListener('click', () => {
             showModal.classList.remove('hidden');
+            showModal.classList.add('flex');
         });
 
         closeModal.forEach((btn) => {
             btn.addEventListener('click', () => {
                 showModal.classList.add('hidden');
+                showModal.classList.remove('flex');
             });
         });
         

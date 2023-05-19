@@ -12,6 +12,7 @@ from django.utils.text import slugify
 from . import forms
 from django.db.models import OuterRef, Subquery, Q
 from django.core.paginator import Paginator
+import sweetify
 
 menus = [
     {'name': 'Dashboard', 'url': '/dashboard/', 'icon': 'fas fa-tachometer-alt', 'id': 'dashboard'},
@@ -92,6 +93,7 @@ def contact(request):
     return render(request, "myapp/contact.html", context)
 
 def dashboard(request):
+
     context = {
         'title': 'Dashboard',
         'content': 'Welcome to WeeAI!',
@@ -101,6 +103,7 @@ def dashboard(request):
         'menus': menus,
         'logo': 'myapp/images/Logo.png',
     }
+    sweetify.success(request, 'Operation successful!', persistent='Dismiss')
     return render(request, "myapp/dashboard.html", context)
 
 def docs(request):

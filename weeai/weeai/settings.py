@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_browser_reload',
     'myapp',
     'fontawesomefree',
+    'sweetify',
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,6 @@ NPM_BIN_PATH = 'C:\\Program Files\\nodejs\\npm.cmd'
 
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# possible options: 'sweetalert', 'sweetalert2' - default is 'sweetalert2'
+SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'
