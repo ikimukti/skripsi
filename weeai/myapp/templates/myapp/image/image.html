@@ -66,7 +66,11 @@
                         </div>
                         {% endif %}
                     </div>
-                    <img class="w-32 h-32 object-cover rounded-md cursor-pointer" src="{% static 'myapp/images/' %}{{ image.pathImage }}" alt="{{ image.idImage.pathImage }}">
+                    <div>
+                        <a class="" href="{% url 'myapp:imageSingle' image.id %}">
+                            <img class="w-32 h-32 object-cover rounded-md cursor-pointer" src="{% static 'myapp/images/' %}{{ image.pathImage }}" alt="{{ image.pathImage }}">
+                        </a>
+                    </div>
                     <div class="flex flex-row justify-center items-center space-x-2 mt-2">
                         <a class="flex flex-row justify-center items-center bg-blue-200 hover:bg-blue-300 rounded-md px-4 py-2 text-gray-700" href="">
                             <i class="fas fa-edit"></i>
@@ -82,7 +86,8 @@
                         </a>
                         {% else %}
                         <!-- View segmentation reports -->
-                        <a class="flex flex-row justify-center items-center bg-green-200 hover:bg-green-300 rounded-md px-4 py-2 text-gray-700" href="">
+                        <a class="flex flex-row justify-center items-center bg-green-200 hover:bg-green-300 rounded-md px-4 py-2 text-gray-700" 
+                        href="{% url 'myapp:imageSingle' image.id %}">
                             <i class="fas fa-eye"></i>
                         </a>
                         {% endif %}
@@ -109,26 +114,38 @@
                     <p class="text-sm text-gray-500">Page {{ images.number }} of {{ images.paginator.num_pages }}</p>
                 </div>
                 <div class="flex flex-row justify-center items-center space-x-2 mt-4">
-                    <a class="flex flex-row justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700" href="{% url 'myapp:image' %}?page=1">
+                    <a class="flex flex-row justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700" href="{% url 'myapp:image' %}?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
                         <i class="fas fa-angle-double-left"></i>
                     </a>
                     <!-- if page=1 -->
-                    <a class="flex flex-row justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700" href="{% if images.has_previous %}?page={{ images.previous_page_number }}{% else %}?page=1{% endif %}">
+                    <a class="flex flex-row justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700" href="{% if images.has_previous %}?page={{ images.previous_page_number }}{% else %}?page=1{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
                         <i class="fas fa-angle-left"></i>
                     </a>
                     <!-- The number page that appears is only the current number, the previous, the next and the slightly back and forth and add ... -->
                     {% for i in images.paginator.page_range %}
                     {% if images.number == i %}
-                    <a class="flex flex-row justify-center items-center bg-blue-200 hover:bg-blue-300 rounded-md px-4 py-2 text-gray-700" href="{% url 'myapp:image' %}?page={{ i }}">{{ i }}</a>
+                    <a class="flex flex-row justify-center items-center bg-blue-200 hover:bg-blue-300 rounded-md px-4 py-2 text-gray-700" href="{% url 'myapp:image' %}?page={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                        {{ i }}
+                    </a>
                     {% elif i > images.number|add:'-3' and i < images.number|add:'3' %}
-                    <a class="flex flex-row justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700" href="{% url 'myapp:image' %}?page={{ i }}">{{ i }}</a>
+                    <a class="flex flex-row justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700" href="{% url 'myapp:image' %}?page={{ i }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                        {{ i }}
+                    </a>
+                    {% elif i == images.number|add:'-3' and i > 1 %}
+                    <a class="flex flex-row justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700">
+                        ...
+                    </a>
+                    {% elif i == images.number|add:'3' and i < images.paginator.num_pages %}
+                    <a class="flex flex-row justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700">
+                        ...
+                    </a>
                     {% endif %}
                     {% endfor %}
                     <!-- end number page -->
-                    <a class="flex flex-row justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700" href="{% if images.has_next %}?page={{ images.next_page_number }}{% else %}?page={{ images.paginator.num_pages }}{% endif %}">
+                    <a class="flex flex-row justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700" href="{% if images.has_next %}?page={{ images.next_page_number }}{% else %}?page={{ images.paginator.num_pages }}{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
                         <i class="fas fa-angle-right"></i>
                     </a>
-                    <a class="flex flex-row justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700" href="{% url 'myapp:image' %}?page={{ images.paginator.num_pages }}">
+                    <a class="flex flex-row justify-center items-center bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700" href="{% url 'myapp:image' %}?page={{ images.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
                         <i class="fas fa-angle-double-right"></i>
                     </a>
                 </div>

@@ -94,5 +94,10 @@
     </script>
     {% load sweetify %}
     {% sweetify %}
+    <!-- static nonce -->
+    {% sweetify nonce="XYZ" %}
+
+    <!-- from request -->
+    {% sweetify nonce=request.csp_nonce %}
 </body>
 </html>

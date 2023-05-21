@@ -26,6 +26,16 @@
                     </div>
                 </div>
             </div>
+            <!-- message -->
+            {% if messages %}
+            <div class="flex flex-row justify-between items-center">
+                <div class="flex flex-col space-y-1">
+                    {% for message in messages %}
+                    <p class="text-sm text-gray-500">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
             <form method="post" enctype="multipart/form-data" class="flex flex-row items-center space-x-6 w-full">
                 {% csrf_token %}
                 <!-- image preview -->
@@ -42,7 +52,7 @@
                 </div>
                 <!-- image upload -->
                 <div class="flex flex-col space-y-1">
-                    <label for="image" class="text-sm font-bold text-gray-700">{{ ImageUploadForm.image.label_tag }}</label>
+                    {{ ImageUploadForm.image.label_tag }}
                     <p class="text-xs text-gray-500">Upload an image to be segmented. The image will be resized to <span class="font-bold">512x512</span> pixels.</p>
                     {{ ImageUploadForm.image }}
                     <p class="text-xs text-gray-500">
@@ -56,9 +66,7 @@
                         {% endfor %}
                     </p>
                     {% endif %}
-                    <label for="uploader" class="text-sm font-bold text-gray-700">
-                        {{ ImageUploadForm.uploader.label_tag }}
-                    </label>
+                    {{ ImageUploadForm.uploader.label_tag }}
                     <p class="text-xs text-gray-500">
                         Uploader name. If left blank, the uploader name will be set to <span class="font-bold">Anonymous</span>.
                     </p>

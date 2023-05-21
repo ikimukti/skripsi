@@ -1,7 +1,5 @@
 from django.db import models
 from django.utils.text import slugify
-
-# Create your models here.
 class XImage(models.Model):
     id = models.AutoField(primary_key=True)
     pathImage = models.CharField(max_length=100)
@@ -21,6 +19,10 @@ class XSegmentationResult(models.Model):
     idImage = models.ForeignKey(XImage, on_delete=models.CASCADE)
     pathSegmentationKMeans = models.CharField(max_length=100)
     pathSegmentationAdaptive = models.CharField(max_length=100)
+    pathSegmentationOtsu = models.CharField(max_length=100, blank=True, null=True)
+    pathDeteksiTepiSobel = models.CharField(max_length=100, blank=True, null=True)
+    pathDeteksiTepiPrewitt = models.CharField(max_length=100, blank=True, null=True)
+    pathDeteksiTepiCanny = models.CharField(max_length=100, blank=True, null=True)
     pathGroundTruth = models.CharField(max_length=100)
     # model json 
     report = models.JSONField()

@@ -33,8 +33,11 @@
     </div>
     {% include 'myapp/snippets/scripts.html' %}
     {% load sweetify %}
-    <!-- Sweetify -->
-    
     {% sweetify %}
+    <!-- static nonce -->
+    {% sweetify nonce="XYZ" %}
+
+    <!-- from request -->
+    {% sweetify nonce=request.csp_nonce %}
 </body>
 </html>
