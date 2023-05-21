@@ -59,15 +59,36 @@ menus = [
 
 def calculate_scores(ground_truth, segmented, type):
     scores = {}
-    scores['f1'] = str(round(f1_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 2))
-    scores['precision'] = str(round(precision_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 2))
-    scores['recall'] = str(round(recall_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 2))
-    scores['accuracy'] = str(round(accuracy_score(ground_truth.flatten(), segmented.flatten()), 2))
-    scores['rand'] = str(round(rand_score(ground_truth.flatten(), segmented.flatten()), 2))
-    scores['jaccard'] = str(round(jaccard_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 2))
-    scores['mse'] = str(round(mean_squared_error(ground_truth.flatten(), segmented.flatten()), 2))
-    scores['mae'] = str(round(mean_absolute_error(ground_truth.flatten(), segmented.flatten()), 2))
-    scores['rmse'] = str(round(mean_squared_error(ground_truth.flatten(), segmented.flatten(), squared=False), 2))
+    if type == 'sobel':
+        scores['f1'] = ''
+        scores['precision'] = ''
+        scores['recall'] = ''
+        scores['accuracy'] = ''
+        scores['rand'] = ''
+        scores['jaccard'] = ''
+        mse = np.mean((ground_truth - segmented) ** 2)
+        scores['mse'] = str(round(mse, 2))
+        scores['mae'] = ''
+        scores['rmse'] = ''
+        if mse == 0:
+            scores['psnr'] = 'inf'
+        else:
+            scores['psnr'] = str(round(20 * np.log10(255 / np.sqrt(mse)), 2))
+    else:
+        scores['f1'] = str(round(f1_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 2))
+        scores['precision'] = str(round(precision_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 2))
+        scores['recall'] = str(round(recall_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 2))
+        scores['accuracy'] = str(round(accuracy_score(ground_truth.flatten(), segmented.flatten()), 2))
+        scores['rand'] = str(round(rand_score(ground_truth.flatten(), segmented.flatten()), 2))
+        scores['jaccard'] = str(round(jaccard_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 2))
+        mse = np.mean((ground_truth - segmented) ** 2)
+        scores['mse'] = str(round(mse, 2))
+        scores['mae'] = str(round(mean_absolute_error(ground_truth.flatten(), segmented.flatten()), 2))
+        scores['rmse'] = str(round(mean_squared_error(ground_truth.flatten(), segmented.flatten(), squared=False), 2))
+        if mse == 0:
+            scores['psnr'] = 'inf'
+        else:
+            scores['psnr'] = str(round(10 * np.log10((255 ** 2) / np.mean((ground_truth - segmented) ** 2)), 2))
     return scores
 
 def modal(request):
@@ -313,7 +334,7 @@ def imageUpload(request):
             # Apply Sobel edge detection
             sobelx = cv.Sobel(img, cv.CV_64F, 1, 0, ksize=5)
             sobely = cv.Sobel(img, cv.CV_64F, 0, 1, ksize=5)
-            segmented5 = cv.bitwise_or(sobelx, sobely)
+            segmented5 = cv.addWeighted(sobelx, 0.5, sobely, 0.5, 0)
             # Apply Prewitt edge detection on img
             kernelx = np.array([[1, 1, 1], [0, 0, 0], [-1, -1, -1]])
             kernely = np.array([[-1, 0, 1], [-1, 0, 1], [-1, 0, 1]])

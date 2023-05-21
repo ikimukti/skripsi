@@ -23,17 +23,23 @@ skripsi is a simple project for my thesis in the university of PGRI Kediri.
 12. Install wheel "pip install wheel"
 13. Install the mysqlclient "pip install mysqlclient"
 14. Install the Font Awesome Free "pip install fontawesomefree"
-15. Install the Sweetify "pip install sweetify"
-16. Install OpenCV "pip install opencv-python"
-17. Create a Tailwind CSS compatible Django app "python manage.py tailwind init"
-18. Install Tailwind CSS dependencies "python manage.py tailwind install"
-19. Start the development server by running tailwind "python manage.py tailwind start"
-20. create database "weeai" in phpmyadmin
-21. If XAMPP account for MySQL is root and password is empty, then next step
-22. migrate the database "python manage.py migrate"
-23. open new terminal and cd to the project "cd skripsi/weeai" and run the server "python manage.py runserver"
-24. open the browser and go to "<http://127.0.0.1:8000/>"
-25. create superuser "python manage.py createsuperuser"
+15. Install Scikit-learn "pip install scikit-learn"
+16. Install the Sweetify "pip install sweetify"
+17. Install OpenCV "pip install opencv-python"
+18. Create a Tailwind CSS compatible Django app "python manage.py tailwind init"
+    
+    ```text
+    Tailwind CSS compatible Django app created successfully.
+    ```
+
+19. Install Tailwind CSS dependencies "python manage.py tailwind install"
+20. Start the development server by running tailwind "python manage.py tailwind start"
+21. create database "weeai" in phpmyadmin
+22. If XAMPP account for MySQL is root and password is empty, then next step
+23. migrate the database "python manage.py migrate"
+24. open new terminal and cd to the project "cd skripsi/weeai" and run the server "python manage.py runserver"
+25. open the browser and go to "<http://127.0.0.1:8000/>"
+26. create superuser "python manage.py createsuperuser"
 
     ```text
     Username (leave blank to use 'ikimu'): admin
@@ -43,10 +49,10 @@ skripsi is a simple project for my thesis in the university of PGRI Kediri.
     Superuser created successfully.
     ```
 
-26. Start the development server by running tailwind "python manage.py tailwind start"
-27. open the browser and go to "<http://127.0.0.1:8000/admin>"
-28. login with superuser "admin" and password "*********"
-29. Nice, you can use the project
+27. Start the development server by running tailwind "python manage.py tailwind start"
+28. open the browser and go to "<http://127.0.0.1:8000/admin>"
+29. login with superuser "admin" and password "*********"
+30. Nice, you can use the project
 
 ## How to install and use Font Awesome Free with Django
 
