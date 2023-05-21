@@ -216,6 +216,24 @@
                                     {{ image.xsegmentation_result_report.kmeans.rand }} %
                                 </td>
                             </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Mean Squared Error</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.kmeans.mse }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Mean Absolute Error</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.kmeans.mae }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Peak Signal to Noise Ratio</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.kmeans.psnr }}
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -286,6 +304,384 @@
                                 <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Rand Index</td>
                                 <td class="border px-2 py-1 text-gray-700 text-sm">
                                     {{ image.xsegmentation_result_report.adaptive.rand }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Mean Squared Error</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.adaptive.mse }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Mean Absolute Error</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.adaptive.mae }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Peak Signal to Noise Ratio</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.adaptive.psnr }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <hr class="border-gray-200 mb-2">
+            <div class="flex flex-row space-x-2">
+                <div class="flex flex-col space-y-2">
+                    <img class="w-48 h-48 object-cover rounded-md cursor-pointer" src="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathSegmentationOtsu }}" alt="{{ image.xsegmentation_result_pathSegmentationOtsu }}">
+                    <p class="text-center text-sm font-semibold text-gray-700">Segmentation Otsu</p>
+                </div>
+                <div class="flex flex-col space-y-2">
+                    <table class="table-auto">
+                        <thead>
+                            <tr>
+                                <th class="border px-2 py-1 text-gray-700 text-sm font-semibold">Name</th>
+                                <th class="border px-2 py-1 text-gray-700 text-sm font-semibold">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Path</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">{{ image.xsegmentation_result_pathSegmentationOtsu }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Date</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">{{ image.xsegmentation_result_date }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Url</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {% static 'myapp/images/' %}{{ image.xsegmentation_result_pathSegmentationOtsu }}
+                                    <a href="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathSegmentationOtsu }}" target="_blank" class="text-blue-500 hover:text-blue-700">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Accuracy</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.otsu.accuracy }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Precision</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.otsu.precision }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Recall</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.otsu.recall }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">F1 Score</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.otsu.f1 }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Jaccard Index</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.otsu.jaccard }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Rand Index</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.otsu.rand }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Mean Squared Error</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.otsu.mse }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Mean Absolute Error</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.otsu.mae }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Peak Signal to Noise Ratio</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.otsu.psnr }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <hr class="border-gray-200 mb-2">
+            <div class="flex flex-row space-x-2">
+                <div class="flex flex-col space-y-2">
+                    <img class="w-48 h-48 object-cover rounded-md cursor-pointer" src="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathDeteksiTepiPrewitt }}" alt="{{ image.xsegmentation_result_pathDeteksiTepiPrewitt }}">
+                    <p class="text-center text-sm font-semibold text-gray-700">Segmentation Deteksi Tepi Prewitt</p>
+                </div>
+                <div class="flex flex-col space-y-2">
+                    <table class="table-auto">
+                        <thead>
+                            <tr>
+                                <th class="border px-2 py-1 text-gray-700 text-sm font-semibold">Name</th>
+                                <th class="border px-2 py-1 text-gray-700 text-sm font-semibold">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Path</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">{{ image.xsegmentation_result_pathDeteksiTepiPrewitt }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Date</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">{{ image.xsegmentation_result_date }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Url</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {% static 'myapp/images/' %}{{ image.xsegmentation_result_pathDeteksiTepiPrewitt }}
+                                    <a href="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathDeteksiTepiPrewitt }}" target="_blank" class="text-blue-500 hover:text-blue-700">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Accuracy</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.prewitt.accuracy }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Precision</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.prewitt.precision }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Recall</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.prewitt.recall }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">F1 Score</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.prewitt.f1 }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Jaccard Index</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.prewitt.jaccard }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Rand Index</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.prewitt.rand }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Mean Squared Error</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.prewitt.mse }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Mean Absolute Error</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.prewitt.mae }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Peak Signal to Noise Ratio</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.prewitt.psnr }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <hr class="border-gray-200 mb-2">
+            <div class="flex flex-row space-x-2">
+                <div class="flex flex-col space-y-2">
+                    <img class="w-48 h-48 object-cover rounded-md cursor-pointer" src="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathDeteksiTepiSobel }}" alt="{{ image.xsegmentation_result_pathDeteksiTepiSobel }}">
+                    <p class="text-center text-sm font-semibold text-gray-700">Segmentation Deteksi Tepi Sobel</p>
+                </div>
+                <div class="flex flex-col space-y-2">
+                    <table class="table-auto">
+                        <thead>
+                            <tr>
+                                <th class="border px-2 py-1 text-gray-700 text-sm font-semibold">Name</th>
+                                <th class="border px-2 py-1 text-gray-700 text-sm font-semibold">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Path</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">{{ image.xsegmentation_result_pathDeteksiTepiSobel }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Date</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">{{ image.xsegmentation_result_date }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Url</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {% static 'myapp/images/' %}{{ image.xsegmentation_result_pathDeteksiTepiSobel }}
+                                    <a href="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathDeteksiTepiSobel }}" target="_blank" class="text-blue-500 hover:text-blue-700">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Accuracy</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.sobel.accuracy }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Precision</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.sobel.precision }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Recall</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.sobel.recall }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">F1 Score</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.sobel.f1 }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Jaccard Index</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.sobel.jaccard }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Rand Index</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.sobel.rand }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Mean Squared Error</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.sobel.mse }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Mean Absolute Error</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.sobel.mae }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Peak Signal to Noise Ratio</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.sobel.psnr }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <hr class="border-gray-200 mb-2">
+            <div class="flex flex-row space-x-2">
+                <div class="flex flex-col space-y-2">
+                    <img class="w-48 h-48 object-cover rounded-md cursor-pointer" src="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathDeteksiTepiCanny }}" alt="{{ image.xsegmentation_result_pathDeteksiTepiCanny }}">
+                    <p class="text-center text-sm font-semibold text-gray-700">Segmentation Result (Canny)</p>
+                </div>
+                <div class="flex flex-col space-y-2">
+                    <table class="table-auto">
+                        <thead>
+                            <tr>
+                                <th class="border px-2 py-1 text-gray-700 text-sm font-semibold">Name</th>
+                                <th class="border px-2 py-1 text-gray-700 text-sm font-semibold">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Path</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">{{ image.xsegmentation_result_pathDeteksiTepiCanny }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Date</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">{{ image.xsegmentation_result_date }}</td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Url</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {% static 'myapp/images/' %}{{ image.xsegmentation_result_pathDeteksiTepiCanny }}
+                                    <a href="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathDeteksiTepiCanny }}" target="_blank" class="text-blue-500 hover:text-blue-700">
+                                        <i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Accuracy</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.canny.accuracy }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Precision</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.canny.precision }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Recall</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.canny.recall }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">F1 Score</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.canny.f1 }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Jaccard Index</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.canny.jaccard }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Rand Index</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.canny.rand }} %
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Mean Squared Error</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.canny.mse }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Mean Absolute Error</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.canny.mae }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="border px-2 py-1 text-gray-700 text-sm font-semibold">Peak Signal to Noise Ratio</td>
+                                <td class="border px-2 py-1 text-gray-700 text-sm">
+                                    {{ image.xsegmentation_result_report.canny.psnr }}
                                 </td>
                             </tr>
                         </tbody>

@@ -67,28 +67,28 @@ def calculate_scores(ground_truth, segmented, type):
         scores['rand'] = ''
         scores['jaccard'] = ''
         mse = np.mean((ground_truth - segmented) ** 2)
-        scores['mse'] = str(round(mse, 2))
+        scores['mse'] = str(round(mse, 4))
         scores['mae'] = ''
         scores['rmse'] = ''
         if mse == 0:
             scores['psnr'] = 'inf'
         else:
-            scores['psnr'] = str(round(20 * np.log10(255 / np.sqrt(mse)), 2))
+            scores['psnr'] = str(round(20 * np.log10(255 / np.sqrt(mse)), 4))
     else:
-        scores['f1'] = str(round(f1_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 2))
-        scores['precision'] = str(round(precision_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 2))
-        scores['recall'] = str(round(recall_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 2))
-        scores['accuracy'] = str(round(accuracy_score(ground_truth.flatten(), segmented.flatten()), 2))
-        scores['rand'] = str(round(rand_score(ground_truth.flatten(), segmented.flatten()), 2))
-        scores['jaccard'] = str(round(jaccard_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 2))
+        scores['f1'] = str(round(f1_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 4))
+        scores['precision'] = str(round(precision_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 4))
+        scores['recall'] = str(round(recall_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 4))
+        scores['accuracy'] = str(round(accuracy_score(ground_truth.flatten(), segmented.flatten()), 4))
+        scores['rand'] = str(round(rand_score(ground_truth.flatten(), segmented.flatten()), 4))
+        scores['jaccard'] = str(round(jaccard_score(ground_truth.flatten(), segmented.flatten(), average='binary', zero_division=1, labels=[0, 1], sample_weight=None, pos_label=1), 4))
         mse = np.mean((ground_truth - segmented) ** 2)
-        scores['mse'] = str(round(mse, 2))
-        scores['mae'] = str(round(mean_absolute_error(ground_truth.flatten(), segmented.flatten()), 2))
-        scores['rmse'] = str(round(mean_squared_error(ground_truth.flatten(), segmented.flatten(), squared=False), 2))
+        scores['mse'] = str(round(mse, 4))
+        scores['mae'] = str(round(mean_absolute_error(ground_truth.flatten(), segmented.flatten()), 4))
+        scores['rmse'] = str(round(mean_squared_error(ground_truth.flatten(), segmented.flatten(), squared=False), 4))
         if mse == 0:
             scores['psnr'] = 'inf'
         else:
-            scores['psnr'] = str(round(10 * np.log10((255 ** 2) / np.mean((ground_truth - segmented) ** 2)), 2))
+            scores['psnr'] = str(round(10 * np.log10((255 ** 2) / np.mean((ground_truth - segmented) ** 4)), 4))
     return scores
 
 def modal(request):
@@ -206,8 +206,12 @@ def image(request):
         'idImage',
         'pathSegmentationKMeans',
         'pathSegmentationAdaptive',
+        'pathSegmentationOtsu',
+        'pathDeteksiTepiCanny',
+        'pathDeteksiTepiSobel',
+        'pathDeteksiTepiPrewitt',
         'pathGroundTruth',
-        'date'
+        'date', 
     ]
 
     # Buat dictionary comprehension untuk mengambil semua field
@@ -431,6 +435,10 @@ def imageSingle(request, id):
         'idImage',
         'pathSegmentationKMeans',
         'pathSegmentationAdaptive',
+        'pathSegmentationOtsu',
+        'pathDeteksiTepiCanny',
+        'pathDeteksiTepiSobel',
+        'pathDeteksiTepiPrewitt',
         'pathGroundTruth',
         'date'
     ]
