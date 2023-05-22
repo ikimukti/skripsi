@@ -27,9 +27,16 @@ skripsi is a simple project for my thesis in the university of PGRI Kediri.
 16. Install the Sweetify "pip install sweetify"
 17. Install OpenCV "pip install opencv-python"
 18. Create a Tailwind CSS compatible Django app "python manage.py tailwind init"
-    
+
     ```text
     Tailwind CSS compatible Django app created successfully.
+    ```
+
+    or
+
+    ```text
+    app_name [theme]: theme
+    CommandError: Error: "C:\Github\skripsi\weeai\theme" directory already exists
     ```
 
 19. Install Tailwind CSS dependencies "python manage.py tailwind install"
