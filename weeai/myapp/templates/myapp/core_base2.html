@@ -65,6 +65,9 @@
             var imageField = document.querySelector('#image-field');
             var imagePreview = document.querySelector('#image-preview');
             var imagePreviewCount = document.querySelector('#image-preview-count');
+            var imagePreviewName = document.querySelector('#image-preview-name');
+            var imagePreviewSize = document.querySelector('#image-preview-size');
+            var imagePreviewDimension = document.querySelector('#image-preview-dimension');
 
             reader.onload = function() {
                 if (reader.readyState == 2) {
@@ -77,11 +80,34 @@
                 reader.readAsDataURL(imageField.files[0]);
                 // Change HTML content with the count of selected image files 0/1
                 imagePreviewCount.innerHTML = `${imageField.files.length}/1`;
+                // Change HTML content with the name of selected image files number of image files
+                imagePreviewName.innerHTML = '';
+                for (let i = 0; i < imageField.files.length; i++) {
+                    oldName = imagePreviewName.innerHTML;
+                    imagePreviewName.innerHTML = `${oldName} , ${imageField.files[i].name}`;
+                }
+                // jika panjang nama file melebihi 40 karakter
+                if (imagePreviewName.innerHTML.length > 40) {
+                    imagePreviewName.innerHTML = `${imagePreviewName.innerHTML.substring(0, 40)} ...`;
+                }
+                // Change HTML content with the size of selected image files number of image files ubah satuan ke MB
+                imagePreviewSize.innerHTML = '';
+                for (let i = 0; i < imageField.files.length; i++) {
+                    oldSize = imagePreviewSize.innerHTML;
+                    size = imageField.files[i].size / 1024 / 1024;
+                    imagePreviewSize.innerHTML = `${oldSize} , ${size.toFixed(2)} MB`;
+                }
+                // jika panjang nama file melebihi 40 karakter
+                if (imagePreviewSize.innerHTML.length > 40) {
+                    imagePreviewSize.innerHTML = `${imagePreviewSize.innerHTML.substring(0, 40)} ...`;
+                }
+
             } else {
                 imagePreview.src = "{% static 'myapp/assets/author.png' %}";
                 // Reset HTML content if no image is selected
                 imagePreviewCount.innerHTML = `0/1`;
             }
+
         }
         // listen for change event on image field
         document.addEventListener('DOMContentLoaded', function() {
@@ -91,6 +117,7 @@
                 imageField.addEventListener('change', previewImage);
             }
         });
+
     </script>
     {% load sweetify %}
     {% sweetify %}

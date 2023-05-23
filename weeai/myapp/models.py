@@ -2,10 +2,19 @@ from django.db import models
 from django.utils.text import slugify
 class XImage(models.Model):
     id = models.AutoField(primary_key=True)
+    nameImage = models.CharField(max_length=100, blank=True, null=True)
     pathImage = models.CharField(max_length=100)
     uploader = models.CharField(max_length=100, blank=True, null=True)
-    date = models.DateTimeField(auto_now_add=True)
+    scaleRatio = models.CharField(max_length=100, blank=True, null=True)
+    contrastEnhancement = models.CharField(max_length=100, blank=True, null=True)
+    backgroundDominant = models.CharField(max_length=100, blank=True, null=True)
+    noiseReduction = models.CharField(max_length=100, blank=True, null=True)
+    sizeImage = models.JSONField(null=True)
+    distanceObject = models.CharField(max_length=100, blank=True, null=True)
+    dateCreated = models.DateTimeField(auto_now_add=True)
+    dateModified = models.DateTimeField(auto_now=True)
     slug = models.SlugField(max_length=150, blank=True, editable=False)
+    
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.pathImage)
@@ -17,13 +26,13 @@ class XImage(models.Model):
 class XSegmentationResult(models.Model):
     id = models.AutoField(primary_key=True)
     idImage = models.ForeignKey(XImage, on_delete=models.CASCADE)
-    pathSegmentationKMeans = models.CharField(max_length=100)
-    pathSegmentationAdaptive = models.CharField(max_length=100)
-    pathSegmentationOtsu = models.CharField(max_length=100, blank=True, null=True)
-    pathDeteksiTepiSobel = models.CharField(max_length=100, blank=True, null=True)
-    pathDeteksiTepiPrewitt = models.CharField(max_length=100, blank=True, null=True)
-    pathDeteksiTepiCanny = models.CharField(max_length=100, blank=True, null=True)
-    pathGroundTruth = models.CharField(max_length=100)
+    pathPreprocessing = models.JSONField(
+        null=True
+    )
+    pathSegmentationResult = models.JSONField(
+        null=True
+    )
     # model json 
     report = models.JSONField()
-    date = models.DateTimeField(auto_now_add=True)
+    dateCreated = models.DateTimeField(auto_now_add=True)
+    dateModified = models.DateTimeField(auto_now=True)
