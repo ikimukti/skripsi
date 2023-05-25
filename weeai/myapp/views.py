@@ -18,7 +18,6 @@ from django.contrib import messages
 from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score, rand_score, jaccard_score, mean_squared_error, mean_absolute_error
 
 
-
 menus = [
     {'name': 'Dashboard', 'url': '/dashboard/', 'icon': 'fas fa-tachometer-alt', 'id': 'dashboard'},
     
@@ -504,13 +503,8 @@ class ImageClassView(View):
             'report',
             'id',
             'idImage',
-            'pathSegmentationKMeans',
-            'pathSegmentationAdaptive',
-            'pathSegmentationOtsu',
-            'pathDeteksiTepiCanny',
-            'pathDeteksiTepiSobel',
-            'pathDeteksiTepiPrewitt',
-            'pathGroundTruth',
+            'pathPreprocessing',
+            'pathSegmentationResult',
             'dateCreated',
             'dateModified',
         ]
@@ -528,17 +522,17 @@ class ImageClassView(View):
             # date, id, pathImage, slug, uploader, xsegmentationresult
             ximages = XImage.objects.filter(
                 Q(date__icontains=q) | Q(id__icontains=q) | Q(pathImage__icontains=q) | Q(slug__icontains=q) | Q(uploader__icontains=q)
-            ).order_by('-dateModified').distinct()
+            ).order_by('-dateModified')
         else:
             # Mendapatkan semua objek XImage
-            ximages = XImage.objects.all().order_by('-dateModified').distinct()
+            ximages = XImage.objects.all().order_by('-dateModified')
         # Anotasi XImage dengan field-field yang diambil
         images = ximages.annotate(**xsegmentation_result_fields)
         # pagination
-        paginator = Paginator(ximages, 10)
+        paginator = Paginator(images, 10)
         page_list = request.GET.get('page')
-        ximages = paginator.get_page(page_list)
-        self.context['images'] = images
+        images = paginator.get_page(page_list)
+        elf.context['images'] = images
         return render(request, self.template_name, self.context)
 
 class ImageListClassView(View):
@@ -585,17 +579,18 @@ class ImageListClassView(View):
             # date, id, pathImage, slug, uploader, xsegmentationresult
             ximages = XImage.objects.filter(
                 Q(date__icontains=q) | Q(id__icontains=q) | Q(pathImage__icontains=q) | Q(slug__icontains=q) | Q(uploader__icontains=q)
-            ).order_by('-dateModified').distinct()
+            ).order_by('-dateModified')
         else:
             # Mendapatkan semua objek XImage
-            ximages = XImage.objects.all().order_by('-dateModified').distinct()
+            ximages = XImage.objects.all().order_by('-dateModified')
         # Anotasi XImage dengan field-field yang diambil
         images = ximages.annotate(**xsegmentation_result_fields)
         # pagination
-        paginator = Paginator(ximages, 10)
+        paginator = Paginator(images, 10)
         page_list = request.GET.get('page')
         images = paginator.get_page(page_list)
         self.context['images'] = images
+
         return render(request, self.template_name, self.context)
 
 class ImageManageClassView(View):
@@ -640,16 +635,16 @@ class ImageManageClassView(View):
             q = request.GET['q']
             # Mendapatkan semua objek XImage yang mengandung q di all field
             # date, id, pathImage, slug, uploader, xsegmentationresult
-            ximages = XImage.objects.filter(
+            images = XImage.objects.filter(
                 Q(date__icontains=q) | Q(id__icontains=q) | Q(pathImage__icontains=q) | Q(slug__icontains=q) | Q(uploader__icontains=q)
             ).order_by('-dateModified').distinct()
         else:
             # Mendapatkan semua objek XImage
-            ximages = XImage.objects.all().order_by('-dateModified').distinct()
+            images = XImage.objects.all().order_by('-dateModified').distinct()
         # Anotasi XImage dengan field-field yang diambil
-        images = ximages.annotate(**xsegmentation_result_fields)
+        images = images.annotate(**xsegmentation_result_fields)
         # pagination
-        paginator = Paginator(ximages, 10)
+        paginator = Paginator(images, 5)
         page_list = request.GET.get('page')
         images = paginator.get_page(page_list)
         self.context['images'] = images
@@ -930,6 +925,7 @@ def ground_truth_image(image_path):
     if np.sum(ground_truth[0]) > np.sum(ground_truth[-1]):
         ground_truth = cv.bitwise_not(ground_truth)
     return ground_truth
+
 class ImageUploadClassView(View):
     context = {
         'title': 'Image Upload',
@@ -993,6 +989,7 @@ class ImageUploadClassView(View):
             # ubah  kedalaman 8-bit (CV_8UC1)
             gray_img = cv.convertScaleAbs(gray_img, alpha=contrastEnhancement2, beta=0)
             contrastEnhancement2img = cv.equalizeHist(gray_img, contrastEnhancement2)
+            pathContrastEnhancement2 = name + '_enhanced2.jpg'
             cv.imwrite('myapp/static/myapp/images/' + name + '_enhanced2.jpg', contrastEnhancement2img)
             pathContrastEnhancement2 = name + '_enhanced2.jpg'
             # Image noiseReduction
@@ -1156,6 +1153,7 @@ class ImageUploadClassView(View):
                     'pathPreprocessingOriginal': pathPreprocessingOriginal,
                     'pathScaleRatio': pathScaleRatio,
                     'pathContrastEnhancement': pathContrastEnhancement,
+                    'pathContrastEnhancement2': pathContrastEnhancement2,
                     'pathNoiseReduction': pathNoiseReduction,
                     'pathNoiseReduction2': pathNoiseReduction2,
                     'pathGroundTruth': pathGroundTruth,

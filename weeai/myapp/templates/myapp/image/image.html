@@ -40,73 +40,121 @@
                     </div>
                 </div>
             </div>
-            <!-- list Images Uploaded -->
-            <div class="flex flex-row flex-wrap justify-center items-center space-x-2">
-                {% for image in images %}
-                <div class="flex flex-col justify-start items-center bg-gray-50 rounded-md p-2 shadow-md mb-2">
-                    <!-- crate info in top right segmented -->
-                    <div class="flex flex-row justify-end items-center space-x-2 mb-2 w-full">
-                        <div class="flex flex-col space-y-1">
-                            <!-- if segmented -->
-                            {% if image.xsegmentation_result_id %}
-                            <h1 class="text-sm font-bold text-gray-700">Segmented</h1>
-                            <p class="text-xs text-gray-500">{{ image.xsegmentation_result_date }}</p>
-                            {% else %}
-                            <h1 class="text-sm font-bold text-gray-700">Not Segmented</h1>
-                            <p class="text-xs text-gray-500">-</p>
-                            {% endif %}
-                        </div>
+            {% for image in images %}
+            <div class="flex flex-col justify-center items-center space-y-2 shadow-md rounded-md border border-gray-200 px-4 py-2">
+                <div class="flex flex-row justify-between items-center w-full">
+                    <div class="flex flex-col space-y-1">
+                        <h1 class="text-sm font-bold text-gray-700">{{ image.nameImage }}</h1>
+                        <p class="text-xs text-gray-500">{{ image.dateCreated }}</p>
+                    </div>
+                    <div class="flex flex-row justify-center items-center space-x-2">
                         {% if image.xsegmentation_result_id %}
-                        <div class="flex flex-row justify-center items-center bg-green-200 hover:bg-green-300 rounded-md px-4 py-2 text-gray-700 cursor-pointer">
+                        <div class="bg-green-200 hover:bg-green-300 rounded-md px-4 py-2 text-gray-700 cursor-pointer">
                             <i class="fas fa-check"></i>
                         </div>
                         {% else %}
-                        <div class="flex flex-row justify-center items-center bg-red-200 hover:bg-red-300 rounded-md px-4 py-2 text-gray-700 cursor-pointer">
+                        <div class="bg-red-200 hover:bg-red-300 rounded-md px-4 py-2 text-gray-700 cursor-pointer">
                             <i class="fas fa-times"></i>
                         </div>
                         {% endif %}
-                    </div>
-                    <div>
-                        <a class="" href="{% url 'myapp:imageSingle' image.id %}">
-                            <img class="w-32 h-32 object-cover rounded-md cursor-pointer" src="{% static 'myapp/images/' %}{{ image.pathImage }}" alt="{{ image.pathImage }}">
-                        </a>
-                    </div>
-                    <div class="flex flex-row justify-center items-center space-x-2 mt-2">
-                        <a class="flex flex-row justify-center items-center bg-blue-200 hover:bg-blue-300 rounded-md px-4 py-2 text-gray-700" href="">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a class="flex flex-row justify-center items-center bg-red-200 hover:bg-red-300 rounded-md px-4 py-2 text-gray-700" href="">
-                            <i class="fas fa-trash"></i>
-                        </a>
-                        <!-- if not yet segmented the segmentation button out -->
-                        {% if not image.xsegmentation_result_id %}
-                        <a class="flex flex-row justify-center items-center bg-green-200 hover:bg-green-300 rounded-md px-4 py-2 text-gray-700" href="">
-                            <!-- icon segment -->
-                            <i class="fas fa-crop"></i>
-                        </a>
-                        {% else %}
-                        <!-- View segmentation reports -->
-                        <a class="flex flex-row justify-center items-center bg-green-200 hover:bg-green-300 rounded-md px-4 py-2 text-gray-700" 
-                        href="{% url 'myapp:imageSingle' image.id %}">
+                        <a href="" class="bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700 cursor-pointer">
                             <i class="fas fa-eye"></i>
                         </a>
-                        {% endif %}
+                        <a href="" class="bg-gray-200 hover:bg-gray-300 rounded-md px-4 py-2 text-gray-700 cursor-pointer">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="" class="bg-red-200 hover:bg-red-300 rounded-md px-4 py-2 text-gray-700 cursor-pointer">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
                     </div>
                 </div>
-                {% endfor %}
-                <!-- if no image -->
-                {% if images|length == 0 %}
-                <div class="flex flex-col justify-center items-center bg-gray-50 rounded-md p-2 shadow-md mb-2">
-                    <div class="flex flex-row justify-center items-center space-x-2">
-                        <div class="flex flex-col space-y-1">
-                            <h1 class="text-sm font-bold text-gray-700">No Image <span class="text-red-500">:(</span></h1>
-                            <p class="text-xs text-gray-500">There are no images uploaded yet. with query <span class="font-bold">"{{ request.GET.q }}"</span></p>
+                <hr class="border-gray-400 w-full">
+                <!-- image tranformation list from image upload to image segmentation row list -->
+                <div class="flex flex-row justify-start items-start w-full space-x-2">
+                    <div class="flex flex-col">
+                        <img src="{% static 'myapp/images/' %}{{ image.pathImage }}" alt="{{ image.nameImage }}" class="w-28 h-28 object-cover rounded-md">
+                        <p class="text-xs text-gray-500">Image Upload</p>
+                    </div>
+                    <!-- xsegmentation_result_pathPreprocessing.pathScaleRatio -->
+                    <div class="relative w-28">
+                        <!-- width and hight full-->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-25 w-28 h-28 rounded-md">
+                            <p class="text-2xl font-bold text-white">{{ image.scaleRatio }} : 1</p>
                         </div>
+                        <img src="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathPreprocessing.pathScaleRatio }}" alt="{{ image.xsegmentation_result_pathPreprocessing.nameScaleRatio }}" class="w-28 h-28 object-cover rounded-md">
+                        <p class="text-xs text-gray-500">Scale Ratio</p>
                     </div>
-                    <img class="w-32 h-32 object-cover rounded-md cursor-pointer" src="{% static 'myapp/assets/' %}no-image.png" alt="No Image">
+                    <!-- xsegmentation_result_pathPreprocessing.pathContrastEnhancement -->
+                    <div class="relative w-28">
+                        <!-- width and hight full-->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-25 w-28 h-28 rounded-md">
+                            <!--  image.contrastEnhancement x 100 = x% -->
+                            <p class="text-2xl font-bold text-white">
+                                {% with image.contrastEnhancement|floatformat:2 as contrastEnhancement %}
+                                {{ contrastEnhancement }}%
+                                {% endwith %}
+                            </p>
+                        </div>
+                        <img src="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathPreprocessing.pathContrastEnhancement }}" alt="{{ image.xsegmentation_result_pathPreprocessing.nameContrastEnhancement }}" class="w-28 h-28 object-cover rounded-md">
+                        <p class="text-xs text-gray-500">Actual Contrast Enhancement</p>
+                    </div>
+                    <!-- xsegmentation_result_pathPreprocessing.pathContrastEnhancement2 -->
+                    <div class="relative w-28">
+                        <!-- width and hight full-->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-25 w-28 h-28 rounded-md">
+                            <!--  image.contrastEnhancement x 100 = x% -->
+                            <p class="text-2xl font-bold text-white">
+                                {% with image.contrastEnhancement2|floatformat:2 as contrastEnhancement2 %}
+                                {{ contrastEnhancement2 }}%
+                                {% endwith %}
+                            </p>
+                        </div>
+                        <img src="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathPreprocessing.pathContrastEnhancement2 }}" alt="{{ image.xsegmentation_result_pathPreprocessing.nameContrastEnhancement2 }}" class="w-28 h-28 object-cover rounded-md">
+                        <p class="text-xs text-gray-500">Contrast Limited Adaptive Histogram Equalization</p>
+                    </div>
+                    <!-- xsegmentation_result_pathPreprocessing.pathNoiseReduction -->
+                    <div class="relative w-28">
+                        <!-- width and hight full-->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-25 w-28 h-28 rounded-md">
+                            <p class="text-2xl font-bold text-white">{{ image.noiseReduction }}</p>
+                        </div>
+                        <img src="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathPreprocessing.pathNoiseReduction }}" alt="{{ image.xsegmentation_result_pathPreprocessing.nameNoiseReduction }}" class="w-28 h-28 object-cover rounded-md">
+                        <p class="text-xs text-gray-500">Gaussian Blur ACE</p>
+                    </div>
+                    <!-- xsegmentation_result_pathPreprocessing.pathNoiseReduction2 -->
+                    <div class="relative w-28">
+                        <!-- width and hight full-->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-25 w-28 h-28 rounded-md">
+                            <p class="text-2xl font-bold text-white">{{ image.noiseReduction2 }}</p>
+                        </div>
+                        <img src="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathPreprocessing.pathNoiseReduction2 }}" alt="{{ image.xsegmentation_result_pathPreprocessing.nameNoiseReduction2 }}" class="w-28 h-28 object-cover rounded-md">
+                        <p class="text-xs text-gray-500">Noise Reduction CLAHE</p>
+                    </div>
+                    <!-- xsegmentation_result_pathPreprocessing.pathGroundTruth -->
+                    <div class="relative w-28">
+                        <!-- width and hight full-->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-25 w-28 h-28 rounded-md">
+                            <p class="text-2xl font-bold text-white">{{ image.groundTruth }}</p>
+                        </div>
+                        <img src="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathPreprocessing.pathGroundTruth }}" alt="{{ image.xsegmentation_result_pathPreprocessing.nameGroundTruth }}" class="w-28 h-28 object-cover rounded-md">
+                        <p class="text-xs text-gray-500">Ground Truth ACE</p>
+                    </div>
+                    <!-- xsegmentation_result_pathPreprocessing.pathGroundTruth2 -->
+                    <div class="relative w-28">
+                        <!-- width and hight full-->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-25 w-28 h-28 rounded-md">
+                            <p class="text-2xl font-bold text-white">{{ image.groundTruth2 }}</p>
+                        </div>
+                        <img src="{% static 'myapp/images/' %}{{ image.xsegmentation_result_pathPreprocessing.pathGroundTruth2 }}" alt="{{ image.xsegmentation_result_pathPreprocessing.nameGroundTruth2 }}" class="w-28 h-28 object-cover rounded-md">
+                        <p class="text-xs text-gray-500">Ground Truth CLAHE</p>
+                    </div>
                 </div>
-                {% endif %}
+                
+                
+
             </div>
+            {% endfor %}
+            
             <!-- pagination with first, prev, next, last and number position end -->
             <div class="flex flex-row justify-between items-center space-x-2">
                 <!-- total page -->
