@@ -819,6 +819,10 @@ select {
   margin-bottom: 0.75rem;
 }
 
+.mb-40 {
+  margin-bottom: 10rem;
+}
+
 .mb-48 {
   margin-bottom: 12rem;
 }
@@ -907,6 +911,10 @@ select {
   height: 8rem;
 }
 
+.h-40 {
+  height: 10rem;
+}
+
 .h-48 {
   height: 12rem;
 }
@@ -935,6 +943,10 @@ select {
   height: 100vh;
 }
 
+.h-10 {
+  height: 2.5rem;
+}
+
 .w-1\/2 {
   width: 50%;
 }
@@ -957,6 +969,10 @@ select {
 
 .w-32 {
   width: 8rem;
+}
+
+.w-40 {
+  width: 10rem;
 }
 
 .w-48 {
@@ -987,6 +1003,14 @@ select {
   width: 100%;
 }
 
+.w-10 {
+  width: 2.5rem;
+}
+
+.w-14 {
+  width: 3.5rem;
+}
+
 .min-w-\[300px\] {
   min-width: 300px;
 }
@@ -1003,8 +1027,16 @@ select {
   flex-shrink: 0;
 }
 
+.flex-grow {
+  flex-grow: 1;
+}
+
 .table-auto {
   table-layout: auto;
+}
+
+.border-collapse {
+  border-collapse: collapse;
 }
 
 .rotate-180 {
@@ -1757,6 +1789,11 @@ select {
 .hover\:text-gray-900:hover {
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+
+.hover\:text-gray-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
 }
 
 .hover\:file\:bg-violet-100::file-selector-button:hover {

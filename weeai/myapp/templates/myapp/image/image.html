@@ -44,14 +44,16 @@
             <div class="flex flex-col justify-center items-center space-y-2 shadow-md rounded-md border border-gray-200 px-4 py-2">
                 <div class="flex flex-row justify-between items-center w-full">
                     <div class="flex flex-col space-y-1">
-                        <h1 class="text-sm font-bold text-gray-700">{{ image.nameImage }}</h1>
+                        <h1 class="text-sm font-bold text-gray-700">
+                            <a href="{% url 'myapp:imageSingle' image.id %}">{{ image.nameImage }} - {{ image.id }} - {{ image.xsegmentation_result_id }}</a>
+                        </h1>
                         <p class="text-xs text-gray-500">{{ image.dateCreated }}</p>
                     </div>
                     <div class="flex flex-row justify-center items-center space-x-2">
                         {% if image.xsegmentation_result_id %}
-                        <div class="bg-green-200 hover:bg-green-300 rounded-md px-4 py-2 text-gray-700 cursor-pointer">
+                        <a class="bg-green-200 hover:bg-green-300 rounded-md px-4 py-2 text-gray-700 cursor-pointer" href="{% url 'myapp:imageSingle' image.id %}">
                             <i class="fas fa-check"></i>
-                        </div>
+                        </a>
                         {% else %}
                         <div class="bg-red-200 hover:bg-red-300 rounded-md px-4 py-2 text-gray-700 cursor-pointer">
                             <i class="fas fa-times"></i>
@@ -68,7 +70,7 @@
                         </a>
                     </div>
                 </div>
-                <hr class="border-gray-400 w-full">
+                <hr class="border-gray-300 w-full">
                 <!-- image tranformation list from image upload to image segmentation row list -->
                 <div class="flex flex-row justify-start items-start w-full space-x-2">
                     <div class="flex flex-col">

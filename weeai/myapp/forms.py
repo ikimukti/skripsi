@@ -67,7 +67,7 @@ class ImageUploadForm(forms.Form):
             attrs={
                 'type': 'range',
                 'min': '0.1',
-                'max': '1.0',
+                'max': '2.0',
                 'step': '0.1',
                 'value': '1.0',
                 'class': 'block w-full text-sm text-slate-500 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100',
@@ -85,7 +85,7 @@ class ImageUploadForm(forms.Form):
             attrs={
                 'type': 'range',
                 'min': '0.1',
-                'max': '1.0',
+                'max': '2.0',
                 'step': '0.1',
                 'value': '1.0',
                 'class': 'block w-full text-sm text-slate-500 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100',

@@ -4,7 +4,7 @@
 {% block content %}
 <!-- content overflow -->
 <div class="flex flex-col w-5/6 fixed right-0 top-14 h-[calc(100vh-3.5rem)] px-4 py-4 overflow-y-auto overflow-hidden" id="content">
-    <div class="flex flex-col m-2 bg-white rounded-md p-4 shadow-md z-10">
+    <div class="flex flex-col m-2 bg-white rounded-md p-4 shadow-md z-10 mb-96">
         <div class="flex flex-row justify-between items-center mb-2">
             <div class="flex flex-col space-y-2">
                 <h1 class="text-2xl font-bold text-gray-700">{{ title }}</h1>
@@ -16,7 +16,19 @@
             </div>
         </div>
         <hr class="border-gray-200 mb-2">
-        <div class="flex flex-col space-y-2">  
+        <div class="flex flex-col space-y-2">
+            {% if chartKmeans %}
+                <img src="data:image/png;base64, {{ chartKmeans|safe }}" alt="chartKmeans" class="w-full">
+            {% endif %}
+            {% if chartKmeans2 %}
+                <img src="data:image/png;base64, {{ chartKmeans2|safe }}" alt="chartKmeans2" class="w-full">
+            {% endif %}
+            {% if chartAdaptive %}
+                <img src="data:image/png;base64, {{ chartAdaptive|safe }}" alt="chartAdaptive" class="w-full">
+            {% endif %}
+            {% if chartAdaptive2 %}
+                <img src="data:image/png;base64, {{ chartAdaptive2|safe }}" alt="chartAdaptive2" class="w-full">
+            {% endif %}
         </div>
     </div>
 </div>

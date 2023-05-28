@@ -16,7 +16,8 @@ from django.core.paginator import Paginator
 import sweetify
 from django.contrib import messages
 from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score, rand_score, jaccard_score, mean_squared_error, mean_absolute_error
-
+from matplotlib import pyplot as plt
+from .utils import get_plot, get_graph, get_plot_table
 
 menus = [
     {'name': 'Dashboard', 'url': '/dashboard/', 'icon': 'fas fa-tachometer-alt', 'id': 'dashboard'},
@@ -74,15 +75,43 @@ class IndexClassView(View):
     def get(self, request):
         return render(request, self.template_name, self.context)
 
-def calculate_scores(ground_truth, segmented, type, average='binary', zero_division=1):
+def calculate_scores(ground_truth, segmented, type, average='binary', zero_division=1, scaleRatio=None, contrastEnhancement=None, GroundTruthKe=None):
     scores = {}
     scores['type'] = type
+    if type == 'kmeans':
+        average = 'weighted'
     scores['f1'] = str(round(f1_score(ground_truth.flatten(), segmented.flatten(), average=average, zero_division=zero_division), 4))
+    if scores['f1'] == 'nan' or scores['f1'] == 'inf' or scores['f1'] == '-inf' or scores['f1'] == 'None' or scores['f1'] == '0.0' or scores['f1'] == '0':
+        # reverse segmented value
+        reverse_segmented = np.where(segmented == 0, 1, 0)
+        scores['f1'] = str(round(f1_score(ground_truth.flatten(), reverse_segmented.flatten(), average=average, zero_division=zero_division), 4))
+        
     scores['precision'] = str(round(precision_score(ground_truth.flatten(), segmented.flatten(), average=average, zero_division=zero_division), 4))
+    if scores['precision'] == 'nan' or scores['precision'] == 'inf' or scores['precision'] == '-inf' or scores['precision'] == 'None' or scores['precision'] == '0.0' or scores['precision'] == '0':
+        # reverse segmented value
+        reverse_segmented = np.where(segmented == 0, 1, 0)
+        scores['precision'] = str(round(precision_score(ground_truth.flatten(), reverse_segmented.flatten(), average=average, zero_division=zero_division), 4))
     scores['recall'] = str(round(recall_score(ground_truth.flatten(), segmented.flatten(), average=average, zero_division=zero_division), 4))
+    if scores['recall'] == 'nan' or scores['recall'] == 'inf' or scores['recall'] == '-inf' or scores['recall'] == 'None' or scores['recall'] == '0.0' or scores['recall'] == '0':
+        # reverse segmented value
+        reverse_segmented = np.where(segmented == 0, 1, 0)
+        scores['recall'] = str(round(recall_score(ground_truth.flatten(), reverse_segmented.flatten(), average=average, zero_division=zero_division), 4))
+    
     scores['accuracy'] = str(round(accuracy_score(ground_truth.flatten(), segmented.flatten()), 4))
+    if scores['accuracy'] == 'nan' or scores['accuracy'] == 'inf' or scores['accuracy'] == '-inf' or scores['accuracy'] == 'None' or scores['accuracy'] == '0.0' or scores['accuracy'] == '0':
+        # reverse segmented value
+        reverse_segmented = np.where(segmented == 0, 1, 0)
+        scores['accuracy'] = str(round(accuracy_score(ground_truth.flatten(), reverse_segmented.flatten()), 4))
     scores['rand'] = str(round(rand_score(ground_truth.flatten(), segmented.flatten()), 4))
+    if scores['rand'] == 'nan' or scores['rand'] == 'inf' or scores['rand'] == '-inf' or scores['rand'] == 'None' or scores['rand'] == '0.0' or scores['rand'] == '0':
+        # reverse segmented value
+        reverse_segmented = np.where(segmented == 0, 1, 0)
+        scores['rand'] = str(round(rand_score(ground_truth.flatten(), reverse_segmented.flatten()), 4))
     scores['jaccard'] = str(round(jaccard_score(ground_truth.flatten(), segmented.flatten(), average=average, zero_division=zero_division), 4))
+    if scores['jaccard'] == 'nan' or scores['jaccard'] == 'inf' or scores['jaccard'] == '-inf' or scores['jaccard'] == 'None' or scores['jaccard'] == '0.0' or scores['jaccard'] == '0':
+        # reverse segmented value
+        reverse_segmented = np.where(segmented == 0, 1, 0)
+        scores['jaccard'] = str(round(jaccard_score(ground_truth.flatten(), reverse_segmented.flatten(), average=average, zero_division=zero_division), 4))
     mse = np.mean((ground_truth - segmented) ** 2)
     scores['mse'] = str(round(mse, 4))
     scores['mae'] = str(round(mean_absolute_error(ground_truth.flatten(), segmented.flatten()), 4))
@@ -91,6 +120,13 @@ def calculate_scores(ground_truth, segmented, type, average='binary', zero_divis
         scores['psnr'] = 'inf'
     else:
         scores['psnr'] = str(round(10 * np.log10((255 ** 2) / np.mean((ground_truth - segmented) ** 4)), 4))
+    if scaleRatio is not None:
+        scores['scaleRatio'] = scaleRatio
+    if contrastEnhancement is not None:
+        scores['contrastEnhancement'] = contrastEnhancement
+    if GroundTruthKe is not None:
+        scores['GroundTruthKe'] = GroundTruthKe
+    
     return scores
 
 
@@ -532,7 +568,7 @@ class ImageClassView(View):
         paginator = Paginator(images, 10)
         page_list = request.GET.get('page')
         images = paginator.get_page(page_list)
-        elf.context['images'] = images
+        self.context['images'] = images
         return render(request, self.template_name, self.context)
 
 class ImageListClassView(View):
@@ -545,7 +581,7 @@ class ImageListClassView(View):
         'menus': menus,
         'logo': 'myapp/images/Logo.png',
     }
-    template_name = 'myapp/image/imageList.html'
+    template_name = 'myapp/image/image.html'
     # override method get
     def get(self, request):
         # Mendapatkan XSegmentationResult terkait jika ada (hanya 1) dan buat field baru xsegmentation_result
@@ -555,13 +591,8 @@ class ImageListClassView(View):
             'report',
             'id',
             'idImage',
-            'pathSegmentationKMeans',
-            'pathSegmentationAdaptive',
-            'pathSegmentationOtsu',
-            'pathDeteksiTepiCanny',
-            'pathDeteksiTepiSobel',
-            'pathDeteksiTepiPrewitt',
-            'pathGroundTruth',
+            'pathPreprocessing',
+            'pathSegmentationResult',
             'dateCreated',
             'dateModified',
         ]
@@ -590,12 +621,11 @@ class ImageListClassView(View):
         page_list = request.GET.get('page')
         images = paginator.get_page(page_list)
         self.context['images'] = images
-
         return render(request, self.template_name, self.context)
 
 class ImageManageClassView(View):
     context = {
-        'title': 'Image Manage',
+        'title': 'Image Manage',	
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/image.css',
@@ -613,13 +643,8 @@ class ImageManageClassView(View):
             'report',
             'id',
             'idImage',
-            'pathSegmentationKMeans',
-            'pathSegmentationAdaptive',
-            'pathSegmentationOtsu',
-            'pathDeteksiTepiCanny',
-            'pathDeteksiTepiSobel',
-            'pathDeteksiTepiPrewitt',
-            'pathGroundTruth',
+            'pathPreprocessing',
+            'pathSegmentationResult',
             'dateCreated',
             'dateModified',
         ]
@@ -635,16 +660,16 @@ class ImageManageClassView(View):
             q = request.GET['q']
             # Mendapatkan semua objek XImage yang mengandung q di all field
             # date, id, pathImage, slug, uploader, xsegmentationresult
-            images = XImage.objects.filter(
+            ximages = XImage.objects.filter(
                 Q(date__icontains=q) | Q(id__icontains=q) | Q(pathImage__icontains=q) | Q(slug__icontains=q) | Q(uploader__icontains=q)
-            ).order_by('-dateModified').distinct()
+            ).order_by('-dateModified')
         else:
             # Mendapatkan semua objek XImage
-            images = XImage.objects.all().order_by('-dateModified').distinct()
+            ximages = XImage.objects.all().order_by('-dateModified')
         # Anotasi XImage dengan field-field yang diambil
-        images = images.annotate(**xsegmentation_result_fields)
+        images = ximages.annotate(**xsegmentation_result_fields)
         # pagination
-        paginator = Paginator(images, 5)
+        paginator = Paginator(images, 10)
         page_list = request.GET.get('page')
         images = paginator.get_page(page_list)
         self.context['images'] = images
@@ -663,6 +688,12 @@ class ImageSummaryClassView(View):
     template_name = 'myapp/image/imageSummary.html'
     # override method get
     def get(self, request):
+        # meembuat data untuk chart
+        x = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+        y = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
+        # get_plot(x, y, title, xlabel, ylabel, rotation, figsize, tight_layout)
+        chart = get_plot(x, y, 'Contoh Chart', 'X', 'Y', 0, (10, 5), True)
+        self.context['chart'] = chart
         # Mendapatkan XSegmentationResult terkait jika ada (hanya 1) dan buat field baru xsegmentation_result
         xsegmentation_results = XSegmentationResult.objects.filter(idImage=OuterRef('pk'))
         # Definisikan semua field yang ingin diambil
@@ -670,13 +701,8 @@ class ImageSummaryClassView(View):
             'report',
             'id',
             'idImage',
-            'pathSegmentationKMeans',
-            'pathSegmentationAdaptive',
-            'pathSegmentationOtsu',
-            'pathDeteksiTepiCanny',
-            'pathDeteksiTepiSobel',
-            'pathDeteksiTepiPrewitt',
-            'pathGroundTruth',
+            'pathPreprocessing',
+            'pathSegmentationResult',
             'dateCreated',
             'dateModified',
         ]
@@ -701,15 +727,15 @@ class ImageSummaryClassView(View):
         # Anotasi XImage dengan field-field yang diambil
         images = ximages.annotate(**xsegmentation_result_fields)
         # pagination
-        paginator = Paginator(ximages, 10)
+        paginator = Paginator(images, 10)
         page_list = request.GET.get('page')
         images = paginator.get_page(page_list)
         self.context['images'] = images
         return render(request, self.template_name, self.context)
-
-class ImageUploaderClassView(View):
+    
+class ImageSummarySingleClassView(View):
     context = {
-        'title': 'Image Uploader',
+        'title': 'Image Summary',
         'content': 'Welcome to WeeAI!',
         'contributor': 'WeeAI Team',
         'app_css': 'myapp/css/image.css',
@@ -717,9 +743,90 @@ class ImageUploaderClassView(View):
         'menus': menus,
         'logo': 'myapp/images/Logo.png',
     }
+    template_name = 'myapp/image/imageSummary.html'
+    def generate_chart(self, title, chartName, y_labels,unit):
+        data = self.context['imageSingle']['xsegmentation_result_report']['kmeans_scores']
+
+        # x adalah kombinasi dari 'scaleRatio', 'contrastEnhancement' 'GroundTruthKe'
+        x = [f"{item['scaleRatio']},{item['contrastEnhancement']},{item['GroundTruthKe']}" for item in data]
+
+        xlabel = 'Kombinasi Parameter (scaleRatio, contrastEnhancement, GroundTruthKe)'
+
+        # x adalah kombinasi dari scaleRatio / 10, contrastEnhancement / 10,  GroundTruthKe
+        x = [f"{item['scaleRatio']/10}:1 , {item['contrastEnhancement']/10}:1 , {item['GroundTruthKe']}" for item in data]
+
+        y_labels = y_labels
+        if unit == '%':
+            # y_values * 100
+            y_values = [[float(item[label]) * 100 for item in data] for label in y_labels]
+        else:
+            y_values = [[float(item[label]) for item in data] for label in y_labels]
+        title = title
+        rotation = 0
+        figsize = (10, 5)
+        tight_layout = True
+
+        # Mark the best x in red
+        # Find the index of the best y value
+        best_index = x.index(max(x))
+
+        # Create a list of colors
+        colors = ['blue'] * len(x)
+        colors[best_index] = 'red'
+
+        chart = get_plot(x, y_values, title, xlabel, y_labels, rotation, figsize, tight_layout, colors, unit)
+        
+        self.context[chartName] = chart
+
+    # override method get
+    def get(self, request, id):
+        
+        ximage = XImage.objects.prefetch_related('xsegmentationresult_set').get(id=id)
+
+        if ximage.xsegmentationresult_set.exists():
+            xsegmentation_result = ximage.xsegmentationresult_set.first()
+            # Mengambil semua field yang dibutuhkan dari XSegmentationResult
+            xsegmentation_result_fields = {
+                'xsegmentation_result_report': xsegmentation_result.report,
+                'xsegmentation_result_id': xsegmentation_result.id,
+                'xsegmentation_result_idImage': xsegmentation_result.idImage,
+                'xsegmentation_result_pathPreprocessing': xsegmentation_result.pathPreprocessing,
+                'xsegmentation_result_pathSegmentationResult': xsegmentation_result.pathSegmentationResult,
+                'xsegmentation_result_dateCreated': xsegmentation_result.dateCreated,
+                'xsegmentation_result_dateModified': xsegmentation_result.dateModified,
+            }
+        
+            self.context['imageSingle'] = {
+                **ximage.__dict__,
+                **xsegmentation_result_fields,
+            }
+        else:
+            self.context['imageSingle'] = ximage.__dict__
+        
+        y_labels = ['mse', 'mae', 'rmse', 'psnr']
+        self.generate_chart('Akurasi K-Means', 'chartKmeans', y_labels,unit='dB')
+        self.generate_chart('Akurasi Adaptive Thresholding', 'chartAdaptive', y_labels,unit='dB')
+        y_labels = ['f1', 'precision', 'recall', 'accuracy','rand', 'jaccard']
+        self.generate_chart('Akurasi K-Means', 'chartKmeans2', y_labels, unit='%')
+        self.generate_chart('Akurasi Adaptive Thresholding', 'chartAdaptive2', y_labels, unit='%')
+        
+        
+        
+        return render(request, self.template_name, self.context)
+
+class ImageUploaderClassView(View):
+    context = {
+        'title': 'Image Uploader',
+        'content': 'Welcome to WeeAI!',
+        'contributor': 'WeeAI Team',
+        'app_css': 'myapp/css/styles.css',
+        'app_js': 'myapp/js/scripts.js',
+        'menus': menus,
+        'logo': 'myapp/images/Logo.png',
+    }
     template_name = 'myapp/image/imageUploader.html'
     # override method get
-    def get(self, request):
+    def get(self, request, uploader):
         # Mendapatkan XSegmentationResult terkait jika ada (hanya 1) dan buat field baru xsegmentation_result
         xsegmentation_results = XSegmentationResult.objects.filter(idImage=OuterRef('pk'))
         # Definisikan semua field yang ingin diambil
@@ -727,13 +834,8 @@ class ImageUploaderClassView(View):
             'report',
             'id',
             'idImage',
-            'pathSegmentationKMeans',
-            'pathSegmentationAdaptive',
-            'pathSegmentationOtsu',
-            'pathDeteksiTepiCanny',
-            'pathDeteksiTepiSobel',
-            'pathDeteksiTepiPrewitt',
-            'pathGroundTruth',
+            'pathPreprocessing',
+            'pathSegmentationResult',
             'dateCreated',
             'dateModified',
         ]
@@ -743,7 +845,7 @@ class ImageUploaderClassView(View):
             f'xsegmentation_result_{field}': Subquery(xsegmentation_results.values(field)[:1])
             for field in fields
         }
-
+        
         # Search bar untuk pencarian
         if 'q' in request.GET:
             q = request.GET['q']
@@ -754,14 +856,15 @@ class ImageUploaderClassView(View):
             ).order_by('-dateModified').distinct()
         else:
             # Mendapatkan semua objek XImage
-            ximages = XImage.objects.all().order_by('-dateModified').distinct()
+            ximages = XImage.objects.filter(uploader=uploader).order_by('-dateModified').distinct()
+        print('Uploader: ', uploader)
         # Anotasi XImage dengan field-field yang diambil
         images = ximages.annotate(**xsegmentation_result_fields)
-        # pagination
-        paginator = Paginator(ximages, 10)
+        paginator = Paginator(images, 10)
         page_list = request.GET.get('page')
         images = paginator.get_page(page_list)
         self.context['images'] = images
+        self.context['imageUploader'] = uploader
         return render(request, self.template_name, self.context)
 
 class ImageSingleClassView(View):
@@ -777,54 +880,132 @@ class ImageSingleClassView(View):
     template_name = 'myapp/image/imageSingle.html'
     # override method get
     def get(self, request, id):
-        # Mendapatkan XSegmentationResult terkait jika ada (hanya 1) dan buat field baru xsegmentation_result
-        xsegmentation_results = XSegmentationResult.objects.filter(idImage=OuterRef('pk'))
-        # Definisikan semua field yang ingin diambil
-        fields = [
-            'report',
-            'id',
-            'idImage',
-            'pathSegmentationKMeans',
-            'pathSegmentationAdaptive',
-            'pathSegmentationOtsu',
-            'pathDeteksiTepiCanny',
-            'pathDeteksiTepiSobel',
-            'pathDeteksiTepiPrewitt',
-            'pathGroundTruth',
-            'dateCreated',
-            'dateModified',
-        ]
+        ximage = XImage.objects.prefetch_related('xsegmentationresult_set').get(id=id)
 
-        # Buat dictionary comprehension untuk mengambil semua field
-        xsegmentation_result_fields = {
-            f'xsegmentation_result_{field}': Subquery(xsegmentation_results.values(field)[:1])
-            for field in fields
-        }
-
-        # Search bar untuk pencarian
-        if 'q' in request.GET:
-            q = request.GET['q']
-            # Mendapatkan semua objek XImage yang mengandung q di all field
-            # date, id, pathImage, slug, uploader, xsegmentationresult
-            ximages = XImage.objects.filter(
-                Q(date__icontains=q) | Q(id__icontains=q) | Q(pathImage__icontains=q) | Q(slug__icontains=q) | Q(uploader__icontains=q)
-            ).order_by('-dateModified').distinct()
+        if ximage.xsegmentationresult_set.exists():
+            xsegmentation_result = ximage.xsegmentationresult_set.first()
+            # Mengambil semua field yang dibutuhkan dari XSegmentationResult
+            xsegmentation_result_fields = {
+                'xsegmentation_result_report': xsegmentation_result.report,
+                'xsegmentation_result_id': xsegmentation_result.id,
+                'xsegmentation_result_idImage': xsegmentation_result.idImage,
+                'xsegmentation_result_pathPreprocessing': xsegmentation_result.pathPreprocessing,
+                'xsegmentation_result_pathSegmentationResult': xsegmentation_result.pathSegmentationResult,
+                'xsegmentation_result_dateCreated': xsegmentation_result.dateCreated,
+                'xsegmentation_result_dateModified': xsegmentation_result.dateModified,
+            }
+        
+            self.context['image'] = {
+                **ximage.__dict__,
+                **xsegmentation_result_fields,
+            }
         else:
-            # Mendapatkan semua objek XImage
-            ximages = XImage.objects.all().order_by('-dateModified').distinct()
-        # Anotasi XImage dengan field-field yang diambil
-        images = ximages.annotate(**xsegmentation_result_fields)
-        # pagination
-        paginator = Paginator(ximages, 10)
-        page_list = request.GET.get('page')
-        images = paginator.get_page(page_list)
-        self.context['images'] = images
+            self.context['image'] = ximage.__dict__
+            
         return render(request, self.template_name, self.context)
 
+def plot_and_save(scores):
+    # Extract F1 scores
+    f1_scores = [float(scores[key]['f1']) for key in scores]
+
+    # Extract corresponding configurations for x-axis labels
+    x_labels = [str(key) for key in scores]
+
+    # Plot the F1 scores
+    plt.bar(range(len(f1_scores)), f1_scores)
+    plt.xlabel('Configurations')
+    plt.ylabel('F1 Score')
+    plt.title('F1 Scores for Different Configurations')
+    plt.xticks(range(len(f1_scores)), x_labels, rotation=90)
+    plt.tight_layout()
+    # Saving the plot as an image
+    plt.savefig('result_scores.png')
+    
+
+def kmeans_segmentation_scores(image_path, k=2, scaleRatio=1.0, contrastEnhancement=1.0, imgGroundTruth=None, imgGroundTruth2=None):
+    img = image_path
+
+    scores = []
+    scaleRatio = float(scaleRatio)
+    contrastEnhancement = float(contrastEnhancement)
+    contrastEnhancement2 = float(contrastEnhancement)
+    
+    #  Create for loops with a scaleRatio range from 0.3 before scaleRatio and 0.3 from after scaleRatio
+    if scaleRatio <= 0.1:
+        beforeScaleRatio = 0.1 * 10
+    else:
+        beforeScaleRatio = (scaleRatio - 0.3) * 10
+    afterScaleRatio = (scaleRatio + 0.3) * 10
+    for i in range(int(beforeScaleRatio), int(afterScaleRatio), 1):
+        # Resize the image
+        imgScale = cv.resize(img, (int(img.shape[1] * i / 10), int(img.shape[0] * i / 10)))
+        print('imgScale: ', imgScale.shape)
+        imgGT = cv.resize(imgGroundTruth, (int(imgGroundTruth.shape[1] * i / 10), int(imgGroundTruth.shape[0] * i / 10)))
+        print('imgGT: ', imgGT.shape)
+        imgGT2 = cv.resize(imgGroundTruth2, (int(imgGroundTruth2.shape[1] * i / 10), int(imgGroundTruth2.shape[0] * i / 10)))
+        # Convert imgGT2 to 3 channels
+        imgGT2 = cv.cvtColor(imgGT2, cv.COLOR_GRAY2BGR)
+        print('imgGT2: ', imgGT2.shape)
+        # Convert image to BGR if necessary
+        if len(imgScale.shape) == 3 and imgScale.shape[2] == 4:
+            imgScale = cv.cvtColor(imgScale, cv.COLOR_BGRA2BGR)
+        elif len(imgScale.shape) == 2:
+            imgScale = cv.cvtColor(imgScale, cv.COLOR_GRAY2BGR)
+        # create for loop with range contrastEnhancement from 1 before contrastEnhancement and 2 from after contrastEnhancement
+        if contrastEnhancement <= 0.1:
+            beforeContrastEnhancement = 0.1 * 10
+        else:
+            beforeContrastEnhancement = (contrastEnhancement - 0.3) * 10
+        afterContrastEnhancement = (contrastEnhancement + 0.3) * 10
+        print('Scale Ratio: ', i/10)
+        for j in range(int(beforeContrastEnhancement), int(afterContrastEnhancement), 1):
+            print('Contrast Enhancement: ', j/10)
+            # Image contrastEnhancement with method 1
+            contrastEnhancementimg = cv.addWeighted(imgScale, j/10, np.zeros(imgScale.shape, imgScale.dtype), 0, 0)
+            gray_img = cv.cvtColor(imgScale, cv.COLOR_BGR2GRAY)
+            # Image contrastEnhancement with method 2
+            gray_img = cv.convertScaleAbs(gray_img, alpha=j/10, beta=0)
+            contrastEnhancement2img = cv.equalizeHist(gray_img, j/10)
+            
+            # Convert image to RGB
+            img_rgb = cv.cvtColor(contrastEnhancementimg, cv.COLOR_BGR2RGB)
+            img_rgb2 = cv.cvtColor(contrastEnhancement2img, cv.COLOR_BGR2RGB)
+
+            # Convert to float type
+            img_2d = img_rgb.astype(np.float32)
+            img_2d2 = img_rgb2.astype(np.float32)
+
+            # Reshape image to 2D array
+            img_2d = img_2d.reshape(img_2d.shape[0] * img_2d.shape[1], img_2d.shape[2])
+            img_2d2 = img_2d2.reshape(img_2d2.shape[0] * img_2d2.shape[1], img_2d2.shape[2])
+
+            # Apply k-means clustering
+            criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+            criteria2 = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+            ret, labels, centers = cv.kmeans(img_2d, k, None, criteria, 10, cv.KMEANS_RANDOM_CENTERS)
+            ret2, labels2, centers2 = cv.kmeans(img_2d2, k, None, criteria2, 10, cv.KMEANS_RANDOM_CENTERS)
+
+            # Convert center values to uint8
+            centers = np.uint8(centers)
+            centers2 = np.uint8(centers2)
+
+            # Map labels to center values
+            segmented_img = centers[labels.flatten()]
+            segmented_img2 = centers2[labels2.flatten()]
+            segmented_img = segmented_img.reshape(img_rgb.shape)
+            segmented_img2 = segmented_img2.reshape(img_rgb2.shape)
+            scores.append(calculate_scores(imgGT, segmented_img, type='kmeans', scaleRatio=i, contrastEnhancement=j, GroundTruthKe=1))
+            scores.append(calculate_scores(imgGT2, segmented_img2, type='kmeans', scaleRatio=i, contrastEnhancement=j, GroundTruthKe=2))
+
+
+            
+    return scores
+            
+    
 def kmeans_segmentation(image_path, k=2):
     # Read the image
     img = image_path
-
+    
     # Convert image to RGB
     img_rgb = cv.cvtColor(img, cv.COLOR_BGR2RGB)
 
@@ -926,6 +1107,86 @@ def ground_truth_image(image_path):
         ground_truth = cv.bitwise_not(ground_truth)
     return ground_truth
 
+def find_histogram(labels, centers):
+    hist = cv.calcHist([labels.astype(np.float32)], [0], None, [3], [0, 3])
+    hist = hist.flatten()
+    return hist
+
+
+
+def plot_colors2(hist, centers):
+    # Implementation for plotting colors
+    bar = np.zeros((50, 300, 3), dtype="uint8")
+    startX = 0
+    for (percent, color) in zip(hist, centers):
+        # Plotting colors
+        endX = startX + (percent * 300)
+        cv.rectangle(bar, (int(startX), 0), (int(endX), 50), color.astype("uint8").tolist(), -1)
+        startX = endX
+    return bar
+
+            
+def adaptive_threshold_segmentation_scores(image_path, block_size, c, scaleRatio=1.0, contrastEnhancement=1.0, imgGroundTruth=None, imgGroundTruth2=None):
+    img = image_path
+
+    scores = []
+    scaleRatio = float(scaleRatio)
+    contrastEnhancement = float(contrastEnhancement)
+    contrastEnhancement2 = float(contrastEnhancement)
+    
+    #  Create for loops with a scaleRatio range from 0.3 before scaleRatio and 0.3 from after scaleRatio
+    if scaleRatio <= 0.1:
+        beforeScaleRatio = 0.1 * 10
+    else:
+        beforeScaleRatio = (scaleRatio - 0.3) * 10
+    afterScaleRatio = (scaleRatio + 0.3) * 10
+    for i in range(int(beforeScaleRatio), int(afterScaleRatio), 1):
+        # Resize the image
+        imgScale = cv.resize(img, (int(img.shape[1] * i / 10), int(img.shape[0] * i / 10)))
+        print('imgScale: ', imgScale.shape)
+        imgGT = cv.resize(imgGroundTruth, (int(imgGroundTruth.shape[1] * i / 10), int(imgGroundTruth.shape[0] * i / 10)))
+        print('imgGT: ', imgGT.shape)
+        imgGT2 = cv.resize(imgGroundTruth2, (int(imgGroundTruth2.shape[1] * i / 10), int(imgGroundTruth2.shape[0] * i / 10)))
+        # Convert imgGT2 to 3 channels
+        imgGT2 = cv.cvtColor(imgGT2, cv.COLOR_GRAY2BGR)
+        print('imgGT2: ', imgGT2.shape)
+        # Convert image to BGR if necessary
+        if len(imgScale.shape) == 3 and imgScale.shape[2] == 4:
+            imgScale = cv.cvtColor(imgScale, cv.COLOR_BGRA2BGR)
+        elif len(imgScale.shape) == 2:
+            imgScale = cv.cvtColor(imgScale, cv.COLOR_GRAY2BGR)
+        # create for loop with range contrastEnhancement from 1 before contrastEnhancement and 2 from after contrastEnhancement
+        if contrastEnhancement <= 0.1:
+            beforeContrastEnhancement = 0.1 * 10
+        else:
+            beforeContrastEnhancement = (contrastEnhancement - 0.3) * 10
+        afterContrastEnhancement = (contrastEnhancement + 0.3) * 10
+        print('Scale Ratio: ', i/10)
+        for j in range(int(beforeContrastEnhancement), int(afterContrastEnhancement), 1):
+            print('Contrast Enhancement: ', j/10)
+            # Image contrastEnhancement with method 1
+            contrastEnhancementimg = cv.addWeighted(imgScale, j/10, np.zeros(imgScale.shape, imgScale.dtype), 0, 0)
+            gray_img = cv.cvtColor(imgScale, cv.COLOR_BGR2GRAY)
+            contrastEnhancementimg = cv.cvtColor(contrastEnhancementimg, cv.COLOR_BGR2GRAY)
+            # Image contrastEnhancement with method 2
+            gray_img = cv.convertScaleAbs(gray_img, alpha=j/10, beta=0)
+            contrastEnhancementimg2 = cv.equalizeHist(gray_img, j/10)
+            
+            # Apply adaptive thresholding
+            segmented_img = cv.adaptiveThreshold(contrastEnhancementimg, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, block_size, c)
+            segmented_img2 = cv.adaptiveThreshold(contrastEnhancementimg2, 255, cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY, block_size, c)
+            # 3 channels for segmented_img
+            segmented_img = cv.cvtColor(segmented_img, cv.COLOR_GRAY2BGR)
+            segmented_img2 = cv.cvtColor(segmented_img2, cv.COLOR_GRAY2BGR)
+            
+            # Calculate scores
+            scores.append(calculate_scores(imgGT, segmented_img, type='adaptive', scaleRatio=i, contrastEnhancement=j, GroundTruthKe=1, average='weighted'))
+            scores.append(calculate_scores(imgGT2, segmented_img2, type='adaptive', scaleRatio=i, contrastEnhancement=j, GroundTruthKe=2, average='weighted'))
+
+            
+    return scores
+    
+
 class ImageUploadClassView(View):
     context = {
         'title': 'Image Upload',
@@ -943,6 +1204,9 @@ class ImageUploadClassView(View):
         image_upload_form = ImageUploadForm()
         self.context['ImageUploadForm'] = image_upload_form
         return render(request, self.template_name, self.context)
+    
+    
+    
     
     def post(self, request):
         self.context['title'] = 'Image Upload Post'
@@ -972,12 +1236,30 @@ class ImageUploadClassView(View):
             else:
                 print(f"File {name} already exists and will not be uploaded.")
             img = cv.imread('myapp/static/myapp/images/' + name)
+            # Find and save the dominant color
+            imgDominantColor = img.copy()
+            imgDominantColor = cv.cvtColor(imgDominantColor, cv.COLOR_BGR2RGB)
+            imgDominantColor = imgDominantColor.reshape((imgDominantColor.shape[0] * imgDominantColor.shape[1], 3)).astype(np.float32)
+
+            criteria = (cv.TERM_CRITERIA_EPS + cv.TERM_CRITERIA_MAX_ITER, 200, 0.1)
+            flags = cv.KMEANS_RANDOM_CENTERS
+
+            _, labels, centers = cv.kmeans(imgDominantColor, 3, None, criteria, 10, flags)
+
+            hist = find_histogram(labels, centers)
+            bar = plot_colors2(hist, centers)
+
+            # plt.axis("off")
+            # plt.imshow(bar)
+            # plt.savefig('myapp/static/myapp/images/' + name + '_dominantColor.jpg', bbox_inches='tight', pad_inches=0)
+            # pathDominantColor = name + '_dominantColor.jpg'
+            # Image preprocessing
             pathPreprocessingOriginal = name
             height, width, channels = img.shape
             # Image scaleRatio
             scaleRatio = float(POSTscaleRatio)
-            img = cv.resize(img, (int(img.shape[1] * scaleRatio), int(img.shape[0] * scaleRatio)))
-            cv.imwrite('myapp/static/myapp/images/' + name + '_scaled.jpg', img)
+            imgScale = cv.resize(img, (int(img.shape[1] * scaleRatio), int(img.shape[0] * scaleRatio)))
+            cv.imwrite('myapp/static/myapp/images/' + name + '_scaled.jpg', imgScale)
             pathScaleRatio = name + '_scaled.jpg'
             # Image contrastEnhancement
             contrastEnhancement = float(POSTcontrastEnhancement)
@@ -1027,8 +1309,23 @@ class ImageUploadClassView(View):
                     'size': os.path.getsize('myapp/static/myapp/images/' + name) / 1024 / 1024
                 }
             )
+            # Image Ground Truth
+            ground_truth = ground_truth_image(imgnR)
+            ground_truth2 = ground_truth_image(imgnR2)
+            cv.imwrite('myapp/static/myapp/images/' + name + '_ground_truth.jpg', ground_truth)
+            pathGroundTruth = name + '_ground_truth.jpg'
+            cv.imwrite('myapp/static/myapp/images/' + name + '_ground_truth2.jpg', ground_truth2)
+            pathGroundTruth2 = name + '_ground_truth2.jpg'
+            
+            ground_truth_noScale = ground_truth_image(img)
+            ground_truth_noScale2 = ground_truth_image(imgnR2)
+            print('ground_truth_noScale shape', ground_truth_noScale.shape)
+            print('ground_truth_noScale2 shape', ground_truth_noScale2.shape)
+            print('img shape', img.shape)
+            kmeans_scores = kmeans_segmentation_scores(img, 2, scaleRatio, contrastEnhancement, ground_truth_noScale, ground_truth_noScale2)
+            adaptive_scores = adaptive_threshold_segmentation_scores(img, 11, 2, scaleRatio, contrastEnhancement, ground_truth_noScale, ground_truth_noScale2)
             # Image segmentation using KMeans
-            segKMeans = kmeans_segmentation(imgnR, 2)
+            segKMeans = kmeans_segmentation(img, 2)
             cv.imwrite('myapp/static/myapp/images/' + name + '_segKMeans.jpg', segKMeans)
             pathKMeans = name + '_segKMeans.jpg'
             segKMeans2 = kmeans_segmentation(imgnR2, 2)
@@ -1074,13 +1371,7 @@ class ImageUploadClassView(View):
             pathPrewitt = name + '_segPrewitt.jpg'
             cv.imwrite('myapp/static/myapp/images/' + name + '_segPrewitt2.jpg', segPrewitt2)
             pathPrewitt2 = name + '_segPrewitt2.jpg'
-            # Image Ground Truth
-            ground_truth = ground_truth_image(imgnR)
-            ground_truth2 = ground_truth_image(imgnR2)
-            cv.imwrite('myapp/static/myapp/images/' + name + '_ground_truth.jpg', ground_truth)
-            pathGroundTruth = name + '_ground_truth.jpg'
-            cv.imwrite('myapp/static/myapp/images/' + name + '_ground_truth2.jpg', ground_truth2)
-            pathGroundTruth2 = name + '_ground_truth2.jpg'
+            
             
             # convert image segmentation from 2d to channel
             segAdaptive = cv.cvtColor(segAdaptive, cv.COLOR_GRAY2BGR)
@@ -1112,40 +1403,40 @@ class ImageUploadClassView(View):
 
             # Calculate scores for segKMeans
             scores_kmeans = calculate_scores(ground_truth, segKMeans, 'kmeans')
-            print(scores_kmeans)
+            # print(scores_kmeans)
             # Calculate scores for segAdaptive
             scores_adaptive = calculate_scores(ground_truth, segAdaptive, 'adaptive')
-            print(scores_adaptive)
+            # print(scores_adaptive)
             # Calculate scores for segOtsu
             scores_otsu = calculate_scores(ground_truth, segOtsu, 'otsu')
-            print(scores_otsu)
+            # print(scores_otsu)
             # Calculate scores for segCanny
             scores_canny = calculate_scores(ground_truth, segCanny, 'canny')
-            print(scores_canny)
+            # print(scores_canny)
             # Calculate scores for segSobel
             scores_sobel = calculate_scores(ground_truth, segSobel, 'sobel', 'weighted')
-            print(scores_sobel)
+            # print(scores_sobel)
             # Calculate scores for segPrewitt
             scores_prewitt = calculate_scores(ground_truth, segPrewitt, 'prewitt')
-            print(scores_prewitt)
+            # print(scores_prewitt)
             # Calculate scores for segKMeans2
             scores_kmeans2 = calculate_scores(ground_truth2, segKMeans2, 'kmeans')
-            print(scores_kmeans2)
+            # print(scores_kmeans2)
             # Calculate scores for segAdaptive2
             scores_adaptive2 = calculate_scores(ground_truth2, segAdaptive2, 'adaptive')
-            print(scores_adaptive2)
+            # print(scores_adaptive2)
             # Calculate scores for segOtsu2
             scores_otsu2 = calculate_scores(ground_truth2, segOtsu2, 'otsu')
-            print(scores_otsu2)
+            # print(scores_otsu2)
             # Calculate scores for segCanny2
             scores_canny2 = calculate_scores(ground_truth2, segCanny2, 'canny')
-            print(scores_canny2)
+            # print(scores_canny2)
             # Calculate scores for segSobel2
             scores_sobel2 = calculate_scores(ground_truth2, segSobel2, 'sobel', 'weighted')
-            print(scores_sobel2)
+            # print(scores_sobel2)
             # Calculate scores for segPrewitt2
             scores_prewitt2 = calculate_scores(ground_truth2, segPrewitt2, 'prewitt')
-            print(scores_prewitt2)
+            # print(scores_prewitt2)
             # save scores to database
             
             XSegmentationResult.objects.create(
@@ -1174,6 +1465,8 @@ class ImageUploadClassView(View):
                     'pathPrewitt2': pathPrewitt2,
                 },
                 report = {
+                    'kmeans_scores': kmeans_scores,
+                    'adaptive_scores': adaptive_scores,
                     'scoresKMeans': scores_kmeans,
                     'scoresKMeans2': scores_kmeans2,
                     'scoresAdaptive': scores_adaptive,

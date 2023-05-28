@@ -21,6 +21,7 @@ urlpatterns = [
     path('manage/', views.ManageClassView.as_view(), name='manage'),
     path('image/upload/', views.ImageUploadClassView.as_view(), name='imageUpload'),
     path('image/uploader/<str:uploader>/', views.ImageUploaderClassView.as_view(), name='imageUploader'),
+    path('image/summary/<int:id>/', views.ImageSummarySingleClassView.as_view(), name='imageSummarySingle'),
     path('image/summary/', views.ImageSummaryClassView.as_view(), name='imageSummary'),
     path('image/manage/', views.ImageManageClassView.as_view(), name='imageManage'),
     path('image/list/', views.ImageListClassView.as_view(), name='imageList'),

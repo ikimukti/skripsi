@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+
 class XImage(models.Model):
     id = models.AutoField(primary_key=True)
     nameImage = models.CharField(max_length=100, blank=True, null=True)
